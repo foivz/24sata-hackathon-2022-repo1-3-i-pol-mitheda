@@ -22,7 +22,7 @@ export class ExpenseController {
     try {
       const expense = await prismaClient.expenses.findUnique({
         where: {
-          id: id,
+          id: Number(id),
         },
       });
 
@@ -44,13 +44,14 @@ export class ExpenseController {
         data: {
           title,
           merchant,
-          date,
-          user_id,
+          date: new Date(),
+          user_id: Number(user_id),
         },
       });
 
       return res.status(200).json(newExpense);
     } catch (error: any) {
+      console.log(error);
       return res.status(500).json({ error });
     }
   };
@@ -63,7 +64,7 @@ export class ExpenseController {
 
       const expense = await prismaClient.expenses.delete({
         where: {
-          id: id,
+          id: Number(id),
         },
       });
 

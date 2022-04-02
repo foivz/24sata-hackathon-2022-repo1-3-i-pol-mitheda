@@ -27,11 +27,16 @@ export class UserRoutes {
     this.router.get(`${this.path}/email`, this.controller.getUserByEmail);
 
     /**
-     * Get all users
+     * Create user
      * /users
      */
     this.router.post(`${this.path}`, this.controller.createUser);
 
+    /**
+     * Delete user by id
+     * /users/:id
+     */
+    this.router.delete(`${this.path}/:id`, this.controller.deleteUser);
     return this.router;
   }
 }

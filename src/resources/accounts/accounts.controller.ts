@@ -1,9 +1,91 @@
 import { prismaClient } from "../../utils/prisma.utils";
 
 export class AccountsController {
-  public getAccounts = async (req: any, res: any) => {
-    const accounts = await prismaClient.accounts.findMany({});
+  getAccounts = async (req: any, res: any) => {
+    try {
+      const accounts = await prismaClient.accounts.findMany({});
 
-    return accounts;
+      if (!accounts) {
+        return res.status(404).json({ message: "No accounts found" });
+      }
+
+      return accounts;
+    } catch (error) {
+      return res.status(500).json({ error });
+    }
+  };
+
+  getAccountById = async (req: any, res: any) => {
+    try {
+      const { id } = req.params;
+
+      if (!id) return res.status(400).json({ message: "Missing id parameter" });
+
+      const account = await prismaClient.accounts.findUnique({
+        where: {
+          id: Number(id),
+        },
+      });
+
+      if (!account) {
+        return res.status(404).json({ message: "No account found" });
+      }
+
+      return res.status(200).json(account);
+    } catch (error) {
+      return res.status(500).json({ error });
+    }
+  };
+
+  updateAccoutState = async (req: any, res: any) => {
+    try {
+      const { balance } = req.body;
+      const { id } = req.params;
+
+      if (!balance) {
+        return res.status(400).json({ message: "Missing balance property" });
+      }
+
+      if (!balance) {
+        return res.status(400).json({ message: "Missing balance property" });
+      }
+
+      const account = await prismaClient.accounts.findUnique({
+        where: {
+          id: Number(id),
+        },
+      });
+
+      if (!account) {
+        return res.status(404).json({ message: "No account found" });
+      }
+
+      return res.status(200).json(account);
+    } catch (error) {
+      return res.status(500).json({ error });
+    }
+  };
+
+  createAccount = async (req: any, res: any) => {
+    try {
+      const { balance, user_id } = req.body;
+
+      const user = prismaClient.accounts.create({
+        data: {
+          balance: Number(balance),
+          user_id: Number(user_id),
+        },
+      });
+
+      if (!user) {
+        return res.status(400).json({
+          message: "Failed to create resource",
+        });
+      }
+
+      return res.status(201).json(user);
+    } catch (error) {
+      return res.status(500).json({ error });
+    }
   };
 }
