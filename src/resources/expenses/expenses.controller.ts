@@ -1,10 +1,12 @@
 import { prismaClient } from "../../utils/prisma.utils";
 export class ExpenseController {
   public getExpenses = async (req: any, res: any) => {
+    const { items } = req.query;
+
     try {
       const expenses = await prismaClient.expenses.findMany({
         include: {
-          expense_item: true,
+          expense_item: JSON.parse(items),
         },
       });
 

@@ -2,8 +2,8 @@ import Joi from "joi";
 
 export const createUserSchema = (req: any, res: any, next: any) => {
   const createUserSchema = Joi.object({
-    title: Joi.string(),
-    merchant: Joi.string(),
+    username: Joi.string().required(),
+    email: Joi.string().email().required(),
     date: Joi.date(),
     token: Joi.string().required(),
     user_id: Joi.number(),
