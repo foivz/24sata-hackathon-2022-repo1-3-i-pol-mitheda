@@ -40,7 +40,11 @@ export class ExpenseRoutes {
      * GET
      * /expenses/:id
      */
-    this.router.get(`${this.path}`, authMiddleware, this.controller.getExpense);
+    this.router.get(
+      `${this.path}/:id`,
+      authMiddleware,
+      this.controller.getExpense
+    );
 
     /**
      * Create expense

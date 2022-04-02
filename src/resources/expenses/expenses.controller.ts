@@ -47,8 +47,6 @@ export class ExpenseController {
 
     if (!id) id = res.locals.userId;
 
-    
-
     if (!id) {
       return res.status(400).json({ message: "Something went wrong" });
     }
