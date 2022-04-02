@@ -30,6 +30,11 @@ const awsmobile = {
             "name": "BookTrip_dev",
             "alias": "$LATEST",
             "region": "eu-central-1"
+        },
+        {
+            "name": "BookTrip_dev",
+            "alias": "$LATEST",
+            "region": "eu-central-1"
         }
     ]
 };

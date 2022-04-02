@@ -43,7 +43,11 @@ export class ExpenseController {
   };
 
   public getExpense = async (req: any, res: any) => {
-    const { id } = req.params;
+    let { id } = req.params;
+
+    if (!id) id = res.locals.userId;
+
+    
 
     if (!id) {
       return res.status(400).json({ message: "Something went wrong" });
