@@ -44,14 +44,37 @@ export class ExpenseController {
 
   public createExpense = async (req: any, res: any) => {
     try {
-      const { title, merchant, user_id } = req.body;
+      const { title, merchant, account, date } = req.body;
+
+      let { userId } = req.body;
+
+      if (!userId) userId = res.locals.userId;
+
+      const expenseAccount = await prismaClient.accounts.findUnique({
+        where: {
+          id: Number(account),
+        },
+      });
+
+      if (!expenseAccount) {
+        return res.status(409).json({
+          message: "No account with provided id",
+        });
+      }
+
+      if (expenseAccount.user_id !== userId) {
+        return res.status(409).json({
+          message: "Account doesn't match with user",
+        });
+      }
 
       const newExpense = await prismaClient.expenses.create({
         data: {
-          title,
-          merchant,
-          date: new Date(),
-          user_id: user_id ? Number(user_id) : res.locals.userId,
+          title: title ?? "",
+          merchant: merchant ?? "",
+          date: date ?? new Date(),
+          account_id: account,
+          user_id: userId,
         },
       });
 
@@ -67,7 +90,7 @@ export class ExpenseController {
 
       if (req.body.items) {
         const { items } = req.body;
-        expenseItems = prismaClient.expense_item.createMany({
+        expenseItems = await prismaClient.expense_item.createMany({
           data: items.map((item) => ({
             title: Number(item.title),
             price: Number(item.price),

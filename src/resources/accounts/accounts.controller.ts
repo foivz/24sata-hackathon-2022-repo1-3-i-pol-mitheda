@@ -46,6 +46,8 @@ export class AccountsController {
         return res.status(400).json({ message: "Missing id parameter" });
       }
 
+      if (req.body.token) delete data.token;
+
       const account = await prismaClient.accounts.update({
         data: {
           ...data,
