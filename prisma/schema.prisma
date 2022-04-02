@@ -8,11 +8,12 @@ datasource db {
 }
 
 model accounts {
-  id      Int     @id @unique(map: "id_UNIQUE") @default(autoincrement())
-  balance Float?  @db.Float
-  user_id Int
-  name    String? @db.VarChar(255)
-  users   users   @relation(fields: [user_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "uac")
+  id       Int        @id @unique(map: "id_UNIQUE") @default(autoincrement())
+  balance  Float?     @db.Float
+  user_id  Int
+  name     String?    @db.VarChar(255)
+  users    users      @relation(fields: [user_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "uac")
+  expenses expenses[]
 
   @@index([user_id], map: "uac_idx")
 }
@@ -36,9 +37,11 @@ model expenses {
   user_id      Int
   created_at   DateTime?      @default(now()) @db.DateTime(0)
   account_id   Int
+  accounts     accounts       @relation(fields: [account_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "accid")
   expense_item expense_item[]
 
   @@index([account_id], map: "expenseaccount_idx")
+  @@index([user_id], map: "user_expense_idx")
 }
 
 model users {

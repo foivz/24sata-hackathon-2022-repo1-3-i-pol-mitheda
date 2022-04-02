@@ -2,13 +2,11 @@ import { prismaClient } from "../../utils/prisma.utils";
 
 export class UsersController {
   public getUsers = async (req: any, res: any) => {
-    const includeAccounts = req.query.accounts ?? false;
-    const includeExpenses = req.query.expenses ?? false;
+    const accounts = req.query.accounts ?? false;
     try {
       const users = await prismaClient.users.findMany({
         include: {
-          accounts: includeAccounts,
-          expenses: includeExpenses,
+          accounts: JSON.parse(accounts),
         },
       });
 
@@ -23,49 +21,54 @@ export class UsersController {
   };
 
   createUser = async (req: any, res: any): Promise<any | void> => {
-    console.log("REQ-BODY", req.body);
     const { username, email, password, cognito_id } = req.body;
 
-    let existingUser = prismaClient.users.findUnique({
-      where: {
-        username: username,
-      },
-    });
-
-    if (existingUser != null) {
-      return res.status(409).json({
-        message: "User with this username already exists",
-      });
-    }
-
-    existingUser = prismaClient.users.findUnique({
-      where: {
-        email: email,
-      },
-    });
-
-    if (existingUser != null) {
-      return res.status(409).json({
-        message: "User with this email already exists",
-      });
-    }
-
     try {
+      // Check if user with username exists
+      let existingUser = await prismaClient.users.findMany({
+        where: {
+          username: username,
+        },
+      });
+
+      if (existingUser.length > 0) {
+        return res.status(409).json({
+          message: "User with this username already exists",
+        });
+      }
+      // Check if user with email exists
+      existingUser = await prismaClient.users.findMany({
+        where: {
+          email: email,
+        },
+      });
+
+      if (existingUser.length > 0) {
+        return res.status(409).json({
+          message: "User with this email already exists",
+        });
+      }
+
+      //Creating a user
       const newUser = await prismaClient.users.create({
         data: {
           username,
           email,
           password,
+          account_state: 0,
           cognito_id,
         },
       });
 
       if (!newUser) {
-        return res.status(404).json({ message: "Failed to create resource" });
+        return res.status(404).json({
+          message: "Failed to create resource",
+        });
       }
 
-      const newAccount = prismaClient.accounts.create({
+      const newAccount = await prismaClient.accounts.create({
         data: {
+          name: "Main account",
           balance: 0,
           user_id: Number(newUser.id),
         },
@@ -82,6 +85,7 @@ export class UsersController {
         account: newAccount,
       });
     } catch (error) {
+      console.log(error);
       return res.status(500).json({ error });
     }
   };
@@ -90,7 +94,7 @@ export class UsersController {
     try {
       const { email } = req.body;
 
-      const user = await prismaClient.users.findUnique({
+      const user = await prismaClient.users.findMany({
         where: {
           email: email,
         },
@@ -115,10 +119,6 @@ export class UsersController {
       const user = await prismaClient.users.findUnique({
         where: {
           id: Number(id),
-        },
-        include: {
-          accounts: true,
-          expenses: true,
         },
       });
 

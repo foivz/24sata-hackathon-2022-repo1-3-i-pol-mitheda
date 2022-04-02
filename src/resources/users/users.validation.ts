@@ -5,6 +5,7 @@ export const createUserValidation = (req: any, res: any, next: any) => {
     username: Joi.string().required().min(2),
     email: Joi.string().email().required(),
     password: Joi.string().min(6).required(),
+    cognito_id: Joi.string().required(),
     token: Joi.string().required(),
   });
 
