@@ -37,14 +37,10 @@ export class AccountsController {
     }
   };
 
-  updateAccoutState = async (req: any, res: any) => {
+  updateAccout = async (req: any, res: any) => {
     try {
-      const { balance, name } = req.body;
+      const data = req.body;
       const { id } = req.params;
-
-      if (!balance) {
-        return res.status(400).json({ message: "Missing balance property" });
-      }
 
       if (!id) {
         return res.status(400).json({ message: "Missing id parameter" });
@@ -52,7 +48,7 @@ export class AccountsController {
 
       const account = await prismaClient.accounts.update({
         data: {
-          balance: balance,
+          ...data,
         },
         where: {
           id: Number(id),

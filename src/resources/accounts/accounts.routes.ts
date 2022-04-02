@@ -35,7 +35,7 @@ export class AccountRoutes {
      * Create account
      * /accounts
      */
-    //this.router.patch(`${this.path}/:id`, this.controller.updateAccout);
+    this.router.patch(`${this.path}/:id`, this.controller.updateAccout);
 
     return this.router;
   }
