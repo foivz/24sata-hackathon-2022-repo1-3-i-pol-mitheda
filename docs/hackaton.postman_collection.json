@@ -21,7 +21,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n\n    \"email\": \"test@mail.co\",\n    \"password\": \"password\",\n    \"token\": \"{{authToken}}\"\n}",
+							"raw": "{\n    \"email\": \"jfkeci@mail.com\",\n    \"username\": \"jfkeci\",\n    \"password\": \"password\",\n    \"token\": \"{{authToken}}\",\n    \"cognito_id\": \"somekey\"\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -139,7 +139,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n\n    \"merchant\": \"merchant\",\n    \"date\": \"2022-03-11 05:12:07\",\n    \"token\": \"{{authToken}}\"\n}",
+							"raw": "{\n    \"title\": \"title\",\n    \"merchant\": \"merchant\",\n    \"date\": \"2022-03-11 05:12:07\",\n    \"account\": 4,\n    \"token\": \"{{authToken}}\"\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -293,7 +293,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"token\": \"{{authToken}}\"\n}",
+							"raw": "{\n    \"name\": \"User 102 account\",\n    \"balance\": 1459,\n    \"user_id\": 102,\n    \"token\": \"{{authToken}}\"\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -308,6 +308,23 @@
 							"path": [
 								"accounts"
 							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update account",
+					"request": {
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
 						}
 					},
 					"response": []
