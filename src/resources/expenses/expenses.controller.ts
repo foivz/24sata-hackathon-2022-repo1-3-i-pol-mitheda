@@ -210,4 +210,15 @@ export class ExpenseController {
       return res.status(500).json({ error });
     }
   };
+
+  // getMerchants = async (req:any, res: any) => {
+  //   try {
+  //     const {userId} = req.body
+
+  //     cons
+  //   } catch (error) {
+  //     console.log(error);
+  //     return res.status(500).json({ error });
+  //   }
+  // }
 }
