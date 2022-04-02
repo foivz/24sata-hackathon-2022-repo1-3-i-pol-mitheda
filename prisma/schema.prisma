@@ -18,6 +18,11 @@ model accounts {
   @@index([user_id], map: "uac_idx")
 }
 
+model category {
+  category String     @id @unique(map: "category_UNIQUE") @db.VarChar(255)
+  expenses expenses[]
+}
+
 model expense_item {
   id         Int      @id @unique(map: "id_UNIQUE") @default(autoincrement())
   title      String?  @db.VarChar(510)
@@ -31,7 +36,6 @@ model expense_item {
 
 model expenses {
   id                          Int            @id @unique(map: "id_UNIQUE") @default(autoincrement())
-  title                       String         @default("Untitled expense") @db.VarChar(255)
   merchant                    String?        @db.VarChar(255)
   date                        DateTime?      @db.DateTime(0)
   user_id                     Int
@@ -55,9 +59,4 @@ model users {
   account_state Float?     @db.Float
   cognito_id    String     @unique(map: "cognito_id_UNIQUE") @db.VarChar(255)
   accounts      accounts[]
-}
-
-model category {
-  category String     @id @unique(map: "category_UNIQUE") @db.VarChar(255)
-  expenses expenses[]
 }

@@ -1,7 +1,10 @@
 import { Router } from "express";
 import authMiddleware from "../../auth-middleware";
 import { ExpenseController } from "./expenses.controller";
-import { createExpenseSchema } from "./expenses.validation";
+import {
+  createExpenseSchema,
+  updateExpenseValidation,
+} from "./expenses.validation";
 
 export class ExpenseRoutes {
   private router = Router();
@@ -52,6 +55,17 @@ export class ExpenseRoutes {
      * /expenses/:id
      */
     this.router.post(`${this.path}/:id`, this.controller.deleteExpense);
+
+    /**
+     * Create expense
+     * POST
+     * /expenses/:id
+     */
+    this.router.patch(
+      `${this.path}/:id`,
+      updateExpenseValidation,
+      this.controller.updateExpense
+    );
 
     return this.router;
   }

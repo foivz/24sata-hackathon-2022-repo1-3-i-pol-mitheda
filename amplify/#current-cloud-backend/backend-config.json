@@ -30,6 +30,11 @@
       "service": "Lex",
       "providerPlugin": "awscloudformation",
       "build": true
+    },
+    "chatbotgazdx": {
+      "service": "Lex",
+      "providerPlugin": "awscloudformation",
+      "build": true
     }
   }
 }
