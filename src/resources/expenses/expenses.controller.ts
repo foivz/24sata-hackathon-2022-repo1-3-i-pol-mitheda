@@ -44,8 +44,8 @@ export class ExpenseController {
       });
 
       return res.status(200).json(newExpense);
-    } catch (error) {
-      throw new HttpException(500, "Internal server error");
+    } catch (error: any) {
+      throw new HttpException(500, error);
     }
   };
 }
