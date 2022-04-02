@@ -1,0 +1,15 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = "mysql://admin:&Q$YFoS*qf$L9$Gu%23x@hackathon-db.cy3vf5fdxo5f.us-east-1.rds.amazonaws.com:3306/hackaton-db"
+}
+
+model users {
+  id       Int     @id @unique(map: "id_UNIQUE")
+  username String? @unique(map: "username_UNIQUE") @db.VarChar(255)
+  email    String? @unique(map: "email_UNIQUE") @db.VarChar(255)
+  password String? @db.VarChar(255)
+}

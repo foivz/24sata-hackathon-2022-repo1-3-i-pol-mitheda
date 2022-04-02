@@ -9,10 +9,15 @@ apiEndpoints:
   test:
     host: localhost
     paths: ['/test', '/test/*']
+  users:
+    host: localhost
+    paths: ['/users', '/users/*']
 serviceEndpoints:
   # ovdje definiramo lokalni endpoint (za testing)
   testService:
     url: 'http://localhost:1337'
+  usersService:
+    url: 'http://localhost:1339'
 policies:
   - basic-auth
   - cors
@@ -25,11 +30,19 @@ policies:
 pipelines:
   # see: https://www.express-gateway.io/docs/configuration/gateway.config.yml/pipelines
   # ovdje definiramo vezu izmedu api servisa i njegovog endpointa
-  userPipeline:
+  testPipeline:
     apiEndpoints:
       - test
     policies:
       - proxy:
           - action:
               serviceEndpoint: testService
+              changeOrigin: true
+  usersPipeline:
+    apiEndpoints:
+      - users
+    policies:
+      - proxy:
+          - action:
+              serviceEndpoint: usersService
               changeOrigin: true
