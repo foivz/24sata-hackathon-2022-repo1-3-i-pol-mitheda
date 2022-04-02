@@ -8,6 +8,7 @@
   "dependencies": {
     "@aws-sdk/client-textract": "^3.58.0",
     "@prisma/client": "^3.11.1",
+    "@types/multer": "^1.4.7",
     "@types/nodemailer": "^6.4.4",
     "aws-sdk": "^2.1106.0",
     "bcrypt": "^5.0.1",
@@ -17,6 +18,7 @@
     "express-gateway": "^1.16.11",
     "joi": "^17.6.0",
     "jwt-decode": "^3.1.2",
+    "multer": "^1.4.4",
     "nodemailer": "^6.7.3",
     "prisma": "^3.11.1"
   },

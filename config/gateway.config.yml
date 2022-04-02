@@ -21,6 +21,9 @@ apiEndpoints:
   accounts:
     host: localhost
     paths: ["/accounts", "/accounts/*"]
+  categories:
+    host: localhost
+    paths: ["/categories", "/categories/*"]
   personalization:
     host: localhost
     paths: ["/personalization", "/personalization/*"]
@@ -38,6 +41,8 @@ serviceEndpoints:
     url: "http://localhost:1341"
   personalizationService:
     url: "http://localhost:1342"
+  categoriesService:
+    url: "http://localhost:1343"
 policies:
   - basic-auth
   - cors
@@ -99,4 +104,12 @@ pipelines:
       - proxy:
           - action:
               serviceEndpoint: personalizationService
+              changeOrigin: true
+  categoriesPipeline:
+    apiEndpoints:
+      - categories
+    policies:
+      - proxy:
+          - action:
+              serviceEndpoint: categoriesService
               changeOrigin: true

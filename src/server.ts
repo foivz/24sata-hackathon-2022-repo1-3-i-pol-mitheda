@@ -13,6 +13,7 @@ import gateway from "express-gateway";
 import "./test/service";
 import "./invoice-scanner/invoice-scanner";
 import "./resources/users/users";
+import "./resources/categories/categories";
 import "./resources/expenses/expenses";
 import "./resources/accounts/accounts";
 import "./personalization/personalization";

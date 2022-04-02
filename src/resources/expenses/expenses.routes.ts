@@ -29,14 +29,26 @@ export class ExpenseRoutes {
      * GET
      * /expenses/user/:userId
      */
+<<<<<<< HEAD
     this.router.get(`${this.path}/user`, this.controller.getUserExpenses);
+=======
+    this.router.get(
+      `${this.path}/user`,
+      authMiddleware,
+      this.controller.getUserExpenses
+    );
+>>>>>>> a5bb42c9b43816b6b993451ee5d44436e37e4f38
 
     /**
      * Get expense by id
      * GET
      * /expenses/:id
      */
-    this.router.get(`${this.path}`, authMiddleware, this.controller.getExpense);
+    this.router.get(
+      `${this.path}/:id`,
+      authMiddleware,
+      this.controller.getExpense
+    );
 
     /**
      * Create expense
@@ -51,14 +63,18 @@ export class ExpenseRoutes {
 
     /**
      * Create expense
-     * POST
+     * DELETE
      * /expenses/:id
      */
-    this.router.post(`${this.path}/:id`, this.controller.deleteExpense);
+    this.router.delete(
+      `${this.path}/:id`,
+      [authMiddleware],
+      this.controller.deleteExpense
+    );
 
     /**
-     * Create expense
-     * POST
+     * Update expense
+     * PATCH
      * /expenses/:id
      */
     this.router.patch(
