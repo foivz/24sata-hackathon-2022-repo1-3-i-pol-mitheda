@@ -1,19 +1,44 @@
 import { prismaClient } from "../../utils/prisma.utils";
 export class ExpenseController {
   public getExpenses = async (req: any, res: any) => {
-    const { items } = req.query;
-
     try {
-      const expenses = await prismaClient.expenses.findMany({
-        include: {
-          expense_item: JSON.parse(items),
-        },
-      });
+      const expenses = await prismaClient.expenses.findMany({});
 
       if (!expenses) return res.status(400).sent("Something went wrong");
 
       return res.status(200).json(expenses);
     } catch (error: any) {
+      return res.status(500).json({ error });
+    }
+  };
+
+  public getUserExpenses = async (req: any, res: any) => {
+    try {
+      let { userId } = req.params;
+      const { items } = req.query;
+
+      const includeItems = items ? JSON.parse(items) : false;
+
+      if (!userId) userId = res.locals.userId;
+
+      const expenses = await prismaClient.expenses.findMany({
+        where: {
+          user_id: userId,
+        },
+        include: {
+          expense_item: includeItems,
+        },
+      });
+
+      if (!expenses) {
+        return res.status(404).json({
+          message: "No expenses found",
+        });
+      }
+
+      return res.status(200).json(expenses);
+    } catch (error) {
+      console.log("[ERROR]", error);
       return res.status(500).json({ error });
     }
   };
