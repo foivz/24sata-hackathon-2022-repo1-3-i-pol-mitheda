@@ -7,6 +7,15 @@ datasource db {
   url      = "mysql://admin:&Q$YFoS*qf$L9$Gu%23x@hackathon-db.cy3vf5fdxo5f.us-east-1.rds.amazonaws.com:3306/hackaton-db"
 }
 
+model accounts {
+  id      Int    @id @unique(map: "id_UNIQUE") @default(autoincrement())
+  balance Float? @db.Float
+  user_id Int
+  users   users  @relation(fields: [user_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "uac")
+
+  @@index([user_id], map: "uac_idx")
+}
+
 model expense_item {
   id         Int      @id @unique(map: "id_UNIQUE") @default(autoincrement())
   title      String?  @db.VarChar(510)
@@ -32,9 +41,11 @@ model expenses {
 }
 
 model users {
-  id       Int        @id @unique(map: "id_UNIQUE") @default(autoincrement())
-  username String?    @unique(map: "username_UNIQUE") @db.VarChar(255)
-  email    String?    @unique(map: "email_UNIQUE") @db.VarChar(255)
-  password String?    @db.VarChar(255)
-  expenses expenses[]
+  id            Int        @id @unique(map: "id_UNIQUE") @default(autoincrement())
+  username      String?    @unique(map: "username_UNIQUE") @db.VarChar(255)
+  email         String?    @unique(map: "email_UNIQUE") @db.VarChar(255)
+  password      String?    @db.VarChar(255)
+  account_state Float?     @db.Float
+  accounts      accounts[]
+  expenses      expenses[]
 }

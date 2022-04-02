@@ -11,6 +11,8 @@ export class ExpenseRoutes {
     // [x] get all expenses
     this.router.get(`${this.path}`, this.controller.getExpenses);
 
+    this.router.post(`${this.path}`, this.controller.createExpense);
+
     return this.router;
   }
 }
