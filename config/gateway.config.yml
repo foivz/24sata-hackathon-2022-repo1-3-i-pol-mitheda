@@ -8,11 +8,16 @@ apiEndpoints:
   # ovdje definiramo api servis i njegove rute
   test:
     host: localhost
-    paths: ['/test', '/test/*']
+    paths: ["/test", "/test/*"]
+  invoiceScanner:
+    host: localhost
+    paths: ["/scan", "/scan/*"]
 serviceEndpoints:
   # ovdje definiramo lokalni endpoint (za testing)
   testService:
-    url: 'http://localhost:1337'
+    url: "http://localhost:1337"
+  invoiceScannerService:
+    url: "http://localhost:1338"
 policies:
   - basic-auth
   - cors
@@ -28,8 +33,18 @@ pipelines:
   userPipeline:
     apiEndpoints:
       - test
+      - invoiceScanner
     policies:
       - proxy:
           - action:
               serviceEndpoint: testService
+              changeOrigin: true
+  userPipeline2:
+    apiEndpoints:
+      - test
+      - invoiceScanner
+    policies:
+      - proxy:
+          - action:
+              serviceEndpoint: invoiceScannerService
               changeOrigin: true
