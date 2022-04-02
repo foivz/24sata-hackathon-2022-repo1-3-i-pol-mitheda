@@ -1,0 +1,56 @@
+{
+  "providers": {
+    "awscloudformation": {
+      "AuthRoleName": "amplify-hackathon24h-dev-101707-authRole",
+      "UnauthRoleArn": "arn:aws:iam::887551856513:role/amplify-hackathon24h-dev-101707-unauthRole",
+      "AuthRoleArn": "arn:aws:iam::887551856513:role/amplify-hackathon24h-dev-101707-authRole",
+      "Region": "us-east-2",
+      "DeploymentBucketName": "amplify-hackathon24h-dev-101707-deployment",
+      "UnauthRoleName": "amplify-hackathon24h-dev-101707-unauthRole",
+      "StackName": "amplify-hackathon24h-dev-101707",
+      "StackId": "arn:aws:cloudformation:us-east-2:887551856513:stack/amplify-hackathon24h-dev-101707/4b8b0f30-b25d-11ec-b569-0aa5a4c8e264",
+      "AmplifyAppId": "d1444r0e5rq3rm"
+    }
+  },
+  "auth": {
+    "hackathon24h01977b36": {
+      "service": "Cognito",
+      "providerPlugin": "awscloudformation",
+      "dependsOn": [],
+      "customAuth": false,
+      "frontendAuthConfig": {
+        "socialProviders": [],
+        "usernameAttributes": [],
+        "signupAttributes": [
+          "EMAIL"
+        ],
+        "passwordProtectionSettings": {
+          "passwordPolicyMinLength": 8,
+          "passwordPolicyCharacters": []
+        },
+        "mfaConfiguration": "OFF",
+        "mfaTypes": [
+          "SMS"
+        ],
+        "verificationMechanisms": [
+          "EMAIL"
+        ]
+      },
+      "providerMetadata": {
+        "s3TemplateURL": "https://s3.amazonaws.com/amplify-hackathon24h-dev-101707-deployment/amplify-cfn-templates/auth/hackathon24h01977b36-cloudformation-template.json",
+        "logicalId": "authhackathon24h01977b36"
+      },
+      "lastPushTimeStamp": "2022-04-02T08:24:33.894Z",
+      "output": {
+        "UserPoolId": "us-east-2_5OXFzXqhd",
+        "AppClientIDWeb": "76l3tdn8uv5mi6d67av725nm6a",
+        "AppClientID": "23jk6n9m8g9lchc9rkc6hmk75a",
+        "IdentityPoolId": "us-east-2:c418da8e-c062-4965-964e-1c1a31623f49",
+        "UserPoolArn": "arn:aws:cognito-idp:us-east-2:887551856513:userpool/us-east-2_5OXFzXqhd",
+        "IdentityPoolName": "hackathon24h01977b36_identitypool_01977b36__dev",
+        "UserPoolName": "hackathon24h01977b36_userpool_01977b36"
+      },
+      "lastPushDirHash": "25xuVotHxwX6PjVZ4Hc3s+uttik="
+    }
+  }
+}

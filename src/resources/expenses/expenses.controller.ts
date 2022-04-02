@@ -1,51 +1,83 @@
-import HttpException from "../../utils/exception/http.exception";
 import { prismaClient } from "../../utils/prisma.utils";
 export class ExpenseController {
   public getExpenses = async (req: any, res: any) => {
     try {
-      const expenses = await prismaClient.expenses.findMany({});
+      const expenses = await prismaClient.expenses.findMany({
+        include: {
+          expense_item: true,
+        },
+      });
 
-      if (!expenses) throw new HttpException(400, "Something went wrong");
+      if (!expenses) return res.status(400).sent("Something went wrong");
 
       return res.status(200).json(expenses);
-    } catch (error) {
-      throw new HttpException(500, "internal server error");
+    } catch (error: any) {
+      return res.status(500).json({ error });
     }
   };
 
   public getExpense = async (req: any, res: any) => {
     const { id } = req.params;
 
-    if (!id) throw new HttpException(409, "Missing id parameter");
+    if (!id) {
+      return res.status(400).json({ message: "Something went wrong" });
+    }
 
     try {
       const expense = await prismaClient.expenses.findUnique({
         where: {
-          id: id,
+          id: Number(id),
         },
       });
 
-      if (!expense) throw new HttpException(404, "No resource found");
+      if (!expense) {
+        return res.status(200).json({ message: "No resource found" });
+      }
 
       return res.status(200).json(expense);
-    } catch (error) {
-      throw new HttpException(500, "Internal server error");
+    } catch (error: any) {
+      return res.status(500).json({ error });
     }
   };
 
   public createExpense = async (req: any, res: any) => {
     try {
-      const expense = req.body;
+      const { title, merchant, user_id } = req.body;
 
       const newExpense = await prismaClient.expenses.create({
         data: {
-          ...expense,
+          title,
+          merchant,
+          date: new Date(),
+          user_id: Number(user_id),
         },
       });
 
       return res.status(200).json(newExpense);
     } catch (error: any) {
-      throw new HttpException(500, error);
+      console.log(error);
+      return res.status(500).json({ error });
+    }
+  };
+
+  public deleteExpense = async (req: any, res: any) => {
+    try {
+      const { id } = req.params;
+
+      if (!id) return res.status(400).json({ message: "Invalid id" });
+
+      const expense = await prismaClient.expenses.delete({
+        where: {
+          id: Number(id),
+        },
+      });
+
+      if (!expense) {
+        return res.status(400).json({ message: "No expense found" });
+      }
+      return res.status(204);
+    } catch (error: any) {
+      return res.status(500).json({ error });
     }
   };
 }
