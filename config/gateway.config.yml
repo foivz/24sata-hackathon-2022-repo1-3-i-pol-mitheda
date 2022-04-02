@@ -21,6 +21,9 @@ apiEndpoints:
   accounts:
     host: localhost
     paths: ["/accounts", "/accounts/*"]
+  personalization:
+    host: localhost
+    paths: ["/personalization", "/personalization/*"]
 serviceEndpoints:
   # ovdje definiramo lokalni endpoint (za testing)
   testService:
@@ -33,6 +36,8 @@ serviceEndpoints:
     url: "http://localhost:1338"
   accountsService:
     url: "http://localhost:1341"
+  personalizationService:
+    url: "http://localhost:1342"
 policies:
   - basic-auth
   - cors
@@ -86,4 +91,12 @@ pipelines:
       - proxy:
           - action:
               serviceEndpoint: accountsService
+              changeOrigin: true
+  personalizationPipeline:
+    apiEndpoints:
+      - personalization
+    policies:
+      - proxy:
+          - action:
+              serviceEndpoint: personalizationService
               changeOrigin: true
