@@ -67,10 +67,11 @@ export class AccountsController {
 
   createAccount = async (req: any, res: any) => {
     try {
-      const { balance, user_id } = req.body;
+      const { name, balance, user_id } = req.body;
 
       const account = await prismaClient.accounts.create({
         data: {
+          name: name,
           balance: Number(balance),
           user_id: Number(user_id) ?? res.locals.userId,
         },
