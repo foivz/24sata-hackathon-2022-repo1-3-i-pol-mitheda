@@ -29,7 +29,7 @@ export class ExpenseRoutes {
      * GET
      * /expenses/user/:userId
      */
-    this.router.get(`${this.path}/:userId`, this.controller.getUserExpenses);
+    this.router.get(`${this.path}/user`, this.controller.getUserExpenses);
 
     /**
      * Get expense by id
