@@ -158,7 +158,7 @@
         "TemplateURL": "https://s3.amazonaws.com/amplify-gateway-dev-210938-deployment/amplify-cfn-templates/auth/gatewaybf0fad55-cloudformation-template.json",
         "Parameters": {
           "identityPoolName": "gatewaybf0fad55_identitypool_bf0fad55",
-          "allowUnauthenticatedIdentities": false,
+          "allowUnauthenticatedIdentities": true,
           "resourceNameTruncated": "gatewabf0fad55",
           "userPoolName": "gatewaybf0fad55_userpool_bf0fad55",
           "autoVerifiedAttributes": "email",
@@ -201,6 +201,29 @@
           },
           "breakCircularDependency": true,
           "dependsOn": "",
+          "env": "dev"
+        }
+      }
+    },
+    "interactionslexccdb095a": {
+      "Type": "AWS::CloudFormation::Stack",
+      "Properties": {
+        "TemplateURL": "https://s3.amazonaws.com/amplify-gateway-dev-210938-deployment/amplify-cfn-templates/interactions/lexccdb095a-cloudformation-template.json",
+        "Parameters": {
+          "authRoleArn": {
+            "Fn::GetAtt": [
+              "AuthRole",
+              "Arn"
+            ]
+          },
+          "authRoleName": {
+            "Ref": "AuthRoleName"
+          },
+          "unauthRoleName": {
+            "Ref": "UnauthRoleName"
+          },
+          "deploymentBucketName": "amplify-gateway-dev-210938-deployment",
+          "s3Key": "amplify-builds/lexccdb095a-4e5a4d7a5548742f474c-build.zip",
           "env": "dev"
         }
       }
