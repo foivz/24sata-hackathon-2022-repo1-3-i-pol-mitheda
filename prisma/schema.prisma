@@ -7,9 +7,34 @@ datasource db {
   url      = "mysql://admin:&Q$YFoS*qf$L9$Gu%23x@hackathon-db.cy3vf5fdxo5f.us-east-1.rds.amazonaws.com:3306/hackaton-db"
 }
 
+model expense_item {
+  id         Int      @id @unique(map: "id_UNIQUE") @default(autoincrement())
+  title      String?  @db.VarChar(510)
+  amount     Float?   @db.Float
+  price      Float?   @db.Float
+  expense_id Int
+  expenses   expenses @relation(fields: [expense_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "eei")
+
+  @@index([expense_id], map: "eei_idx")
+}
+
+model expenses {
+  id           Int            @id @unique(map: "id_UNIQUE") @default(autoincrement())
+  title        String         @db.VarChar(255)
+  merchant     String?        @db.VarChar(255)
+  date         DateTime?      @db.DateTime(0)
+  user_id      Int
+  created_at   DateTime?      @default(now()) @db.DateTime(0)
+  users        users          @relation(fields: [user_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "uzg")
+  expense_item expense_item[]
+
+  @@index([user_id], map: "uzg_idx")
+}
+
 model users {
-  id       Int     @id @unique(map: "id_UNIQUE")
-  username String? @unique(map: "username_UNIQUE") @db.VarChar(255)
-  email    String? @unique(map: "email_UNIQUE") @db.VarChar(255)
-  password String? @db.VarChar(255)
+  id       Int        @id @unique(map: "id_UNIQUE") @default(autoincrement())
+  username String?    @unique(map: "username_UNIQUE") @db.VarChar(255)
+  email    String?    @unique(map: "email_UNIQUE") @db.VarChar(255)
+  password String?    @db.VarChar(255)
+  expenses expenses[]
 }
