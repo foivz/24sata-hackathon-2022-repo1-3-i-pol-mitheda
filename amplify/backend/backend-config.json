@@ -1,6 +1,6 @@
 {
   "auth": {
-    "hackathon24h01977b36": {
+    "gatewaybf0fad55": {
       "service": "Cognito",
       "providerPlugin": "awscloudformation",
       "dependsOn": [],

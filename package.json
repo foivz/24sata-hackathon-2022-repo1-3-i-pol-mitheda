@@ -9,6 +9,7 @@
     "@aws-sdk/client-textract": "^3.58.0",
     "@prisma/client": "^3.11.1",
     "@types/nodemailer": "^6.4.4",
+    "aws-sdk": "^2.1106.0",
     "bcrypt": "^5.0.1",
     "cors": "^2.8.5",
     "dayjs": "^1.11.0",
