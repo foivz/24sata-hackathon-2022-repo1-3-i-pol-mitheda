@@ -23,6 +23,14 @@ const awsmobile = {
     },
     "aws_cognito_verification_mechanisms": [
         "EMAIL"
+    ],
+    "aws_bots": "enable",
+    "aws_bots_config": [
+        {
+            "name": "BookTrip_dev",
+            "alias": "$LATEST",
+            "region": "eu-central-1"
+        }
     ]
 };
 

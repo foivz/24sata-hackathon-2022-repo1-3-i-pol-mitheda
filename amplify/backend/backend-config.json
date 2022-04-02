@@ -24,5 +24,12 @@
         ]
       }
     }
+  },
+  "interactions": {
+    "lexccdb095a": {
+      "service": "Lex",
+      "providerPlugin": "awscloudformation",
+      "build": true
+    }
   }
 }
