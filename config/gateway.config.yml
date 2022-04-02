@@ -9,6 +9,12 @@ apiEndpoints:
   test:
     host: localhost
     paths: ["/test", "/test/*"]
+  users:
+    host: localhost
+    paths: ["/users", "/users/*"]
+  expenses:
+    host: localhost
+    paths: ["/expenses", "/expenses/*"]
   invoiceScanner:
     host: localhost
     paths: ["/scan", "/scan/*"]
@@ -16,6 +22,10 @@ serviceEndpoints:
   # ovdje definiramo lokalni endpoint (za testing)
   testService:
     url: "http://localhost:1337"
+  usersService:
+    url: "http://localhost:1339"
+  expensesService:
+    url: "http://localhost:1340"
   invoiceScannerService:
     url: "http://localhost:1338"
 policies:
@@ -30,7 +40,7 @@ policies:
 pipelines:
   # see: https://www.express-gateway.io/docs/configuration/gateway.config.yml/pipelines
   # ovdje definiramo vezu izmedu api servisa i njegovog endpointa
-  userPipeline:
+  testPipeline:
     apiEndpoints:
       - test
       - invoiceScanner
@@ -47,4 +57,20 @@ pipelines:
       - proxy:
           - action:
               serviceEndpoint: invoiceScannerService
+              changeOrigin: true
+  usersPipeline:
+    apiEndpoints:
+      - users
+    policies:
+      - proxy:
+          - action:
+              serviceEndpoint: usersService
+              changeOrigin: true
+  expensesPipeline:
+    apiEndpoints:
+      - expenses
+    policies:
+      - proxy:
+          - action:
+              serviceEndpoint: expensesService
               changeOrigin: true
