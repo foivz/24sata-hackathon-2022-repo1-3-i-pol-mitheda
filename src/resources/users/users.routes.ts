@@ -1,5 +1,6 @@
 import { Router } from "express";
 import { UsersController } from "./users.controller";
+import { createUserValidation } from "./users.validation";
 
 export class UserRoutes {
   private router = Router();
@@ -30,13 +31,17 @@ export class UserRoutes {
      * Create user
      * /users
      */
-    this.router.post(`${this.path}`, this.controller.createUser);
+    this.router.post(
+      `${this.path}`,
+      createUserValidation,
+      this.controller.createUser
+    );
 
     /**
      * Delete user by id
      * /users/:id
      */
-    this.router.delete(`${this.path}/:id`, this.controller.deleteUser);
+    this.router.patch(`${this.path}/:id`, this.controller.updateUser);
     return this.router;
   }
 }

@@ -1,19 +1,11 @@
 import Joi from "joi";
 
-export const createUserSchema = (req: any, res: any, next: any) => {
+export const createUserValidation = (req: any, res: any, next: any) => {
   const createUserSchema = Joi.object({
-    username: Joi.string().required(),
+    username: Joi.string().required().min(2),
     email: Joi.string().email().required(),
-    date: Joi.date(),
+    password: Joi.string().min(6).required(),
     token: Joi.string().required(),
-    user_id: Joi.number(),
-    items: Joi.array().items(
-      Joi.object({
-        title: Joi.string(),
-        price: Joi.number().required(),
-        amount: Joi.number().required(),
-      })
-    ),
   });
 
   const options = {
