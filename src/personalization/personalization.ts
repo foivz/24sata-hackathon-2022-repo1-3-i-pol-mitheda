@@ -23,7 +23,6 @@ app.get("/personalization", async (req, res, next) => {
       if (err) {
         console.error(err);
       }
-      console.log("RECOMMENDATIONS: ", data);
       res.json(data);
     }
   );
