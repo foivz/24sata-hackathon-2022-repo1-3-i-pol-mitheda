@@ -1,6 +1,7 @@
 import { Router } from "express";
 import authMiddleware from "../../auth-middleware";
 import { ExpenseController } from "./expenses.controller";
+import { createExpenseSchema } from "./expenses.validation";
 
 export class ExpenseRoutes {
   private router = Router();
@@ -34,7 +35,7 @@ export class ExpenseRoutes {
      */
     this.router.post(
       `${this.path}`,
-      authMiddleware,
+      [authMiddleware, createExpenseSchema],
       this.controller.createExpense
     );
 

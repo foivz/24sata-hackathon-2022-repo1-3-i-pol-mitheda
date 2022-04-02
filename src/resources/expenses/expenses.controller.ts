@@ -74,6 +74,7 @@ export class ExpenseController {
             amount: Number(item.amount),
             expense_id: expenseId,
           })),
+          skipDuplicates: false,
         });
 
         if (!expenseItems) {
