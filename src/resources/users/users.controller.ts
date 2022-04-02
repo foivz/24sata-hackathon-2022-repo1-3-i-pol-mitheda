@@ -3,7 +3,11 @@ import { prismaClient } from "../../utils/prisma.utils";
 export class UsersController {
   public getUsers = async (req: any, res: any) => {
     try {
-      const users = await prismaClient.users.findMany();
+      const users = await prismaClient.users.findMany({
+        include: {
+          accounts: true,
+        },
+      });
 
       if (!users) {
         return res.status(404).json({ message: "No users found" });
@@ -68,6 +72,10 @@ export class UsersController {
       const user = await prismaClient.users.findUnique({
         where: {
           id: Number(id),
+        },
+        include: {
+          accounts: true,
+          expenses: true,
         },
       });
 
