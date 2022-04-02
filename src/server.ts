@@ -12,5 +12,6 @@ import gateway from "express-gateway";
 
 import "./test/service";
 import "./resources/users/users";
+import "./resources/expenses/expenses";
 
 gateway().load(path.join(__dirname, "..", "config")).run();

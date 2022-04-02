@@ -12,12 +12,17 @@ apiEndpoints:
   users:
     host: localhost
     paths: ['/users', '/users/*']
+  expenses:
+    host: localhost
+    paths: ['/expenses', '/expenses/*']
 serviceEndpoints:
   # ovdje definiramo lokalni endpoint (za testing)
   testService:
     url: 'http://localhost:1337'
   usersService:
     url: 'http://localhost:1339'
+  expensesService:
+    url: 'http://localhost:1340'
 policies:
   - basic-auth
   - cors
@@ -45,4 +50,12 @@ pipelines:
       - proxy:
           - action:
               serviceEndpoint: usersService
+              changeOrigin: true
+  expensesPipeline:
+    apiEndpoints:
+      - expenses
+    policies:
+      - proxy:
+          - action:
+              serviceEndpoint: expensesService
               changeOrigin: true
