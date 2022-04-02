@@ -14,12 +14,11 @@ export class ExpenseController {
 
   public getUserExpenses = async (req: any, res: any) => {
     try {
-      let { userId } = req.params;
       const { items } = req.query;
 
-      const includeItems = items ? JSON.parse(items) : false;
+      const includeItems = items ? JSON.parse(items) : true;
 
-      if (!userId) userId = res.locals.userId;
+      const userId = res.locals.userId;
 
       const expenses = await prismaClient.expenses.findMany({
         where: {
