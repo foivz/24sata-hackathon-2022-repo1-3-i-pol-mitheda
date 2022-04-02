@@ -15,6 +15,11 @@ export type AmplifyDependentResourcesAttributes = {
             "Region": "string",
             "BotName": "string",
             "FunctionArn": "string"
+        },
+        "chatbotgazdx": {
+            "Region": "string",
+            "BotName": "string",
+            "FunctionArn": "string"
         }
     }
 }

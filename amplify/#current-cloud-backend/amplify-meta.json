@@ -40,7 +40,7 @@
         "s3TemplateURL": "https://s3.amazonaws.com/amplify-gateway-dev-210938-deployment/amplify-cfn-templates/auth/gatewaybf0fad55-cloudformation-template.json",
         "logicalId": "authgatewaybf0fad55"
       },
-      "lastPushTimeStamp": "2022-04-02T19:45:18.889Z",
+      "lastPushTimeStamp": "2022-04-02T21:32:39.407Z",
       "output": {
         "UserPoolId": "eu-central-1_PTh1TFio5",
         "AppClientIDWeb": "6fvbvr497eaeol2k26ksbkqdq9",
@@ -68,13 +68,35 @@
         "s3TemplateURL": "https://s3.amazonaws.com/amplify-gateway-dev-210938-deployment/amplify-cfn-templates/interactions/lexccdb095a-cloudformation-template.json",
         "logicalId": "interactionslexccdb095a"
       },
-      "lastPushTimeStamp": "2022-04-02T19:45:18.889Z",
+      "lastPushTimeStamp": "2022-04-02T21:32:39.408Z",
       "output": {
         "FunctionArn": "arn:aws:lambda:eu-central-1:887551856513:function:gateway_cfnlambda_46b2d83d-dev",
         "Region": "eu-central-1",
         "BotName": "BookTrip_dev"
       },
       "lastPushDirHash": "LZQfh44kMTAwK0x3EGg4inhQWyE="
+    },
+    "chatbotgazdx": {
+      "service": "Lex",
+      "providerPlugin": "awscloudformation",
+      "build": true,
+      "lastPackageTimeStamp": "2022-04-02T21:31:35.743Z",
+      "distZipFilename": "chatbotgazdx-476149504a56725a6174-build.zip",
+      "s3Bucket": {
+        "deploymentBucketName": "amplify-gateway-dev-210938-deployment",
+        "s3Key": "amplify-builds/chatbotgazdx-476149504a56725a6174-build.zip"
+      },
+      "providerMetadata": {
+        "s3TemplateURL": "https://s3.amazonaws.com/amplify-gateway-dev-210938-deployment/amplify-cfn-templates/interactions/chatbotgazdx-cloudformation-template.json",
+        "logicalId": "interactionschatbotgazdx"
+      },
+      "lastPushTimeStamp": "2022-04-02T21:32:39.533Z",
+      "output": {
+        "FunctionArn": "arn:aws:lambda:eu-central-1:887551856513:function:gateway_cfnlambda_4c7aa734-dev",
+        "Region": "eu-central-1",
+        "BotName": "BookTrip_dev"
+      },
+      "lastPushDirHash": "6BWyeAeg6zcTfnzp/OV1EwLYcrQ="
     }
   }
 }

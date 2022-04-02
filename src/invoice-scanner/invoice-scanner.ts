@@ -1,13 +1,17 @@
 import express from "express";
 import {
   TextractClient,
-  AnalyzeDocumentCommand,
   AnalyzeExpenseCommand,
 } from "@aws-sdk/client-textract";
-import fs from "fs";
 import dayjs from "dayjs";
 
 let app = express();
+app.use(express.json());
+
+import multer from "multer";
+const storage = multer.memoryStorage();
+const upload = multer({ storage: storage });
+
 const client = new TextractClient({
   region: "eu-central-1",
   credentials: {
@@ -26,7 +30,7 @@ const tryParseDate = (date?: string) => {
   }
 };
 
-app.post("/scan", async (req, res, next) => {
+app.post("/scan", upload.single("thefile"), async (req, res, next) => {
   const obj = {
     merchant: "",
     date: "",
@@ -34,11 +38,10 @@ app.post("/scan", async (req, res, next) => {
   };
 
   try {
-    const bytes = fs.readFileSync(__dirname + "/racun.jpeg");
-
     const cmd = new AnalyzeExpenseCommand({
       Document: {
-        Bytes: bytes,
+        // @ts-ignore
+        Bytes: req.file.buffer,
       },
     });
 
@@ -84,7 +87,7 @@ app.post("/scan", async (req, res, next) => {
       });
     });
   } catch (e) {
-    console.log(e);
+    // console.log(e);
   } finally {
     return res.json(obj);
   }
