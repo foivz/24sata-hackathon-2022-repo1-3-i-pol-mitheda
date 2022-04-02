@@ -3,6 +3,8 @@ import express from "express";
 
 let app = express();
 
+app.use(express.json());
+
 const expenseRoutes = new ExpenseRoutes();
 
 app.use(expenseRoutes.init());

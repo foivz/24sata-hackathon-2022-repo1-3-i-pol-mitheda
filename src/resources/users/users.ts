@@ -3,9 +3,11 @@ import express from "express";
 
 let app = express();
 
-const userRoutes = new UserRoutes();
+app.use(express.json());
 
-app.use(userRoutes.init());
+const userRoutes = new UserRoutes().init();
+
+app.use(userRoutes);
 
 app.listen(1339, () => {
   console.log("User service started");

@@ -11,6 +11,8 @@ export class UserRoutes {
     // [x] get all users
     this.router.get(`${this.path}`, this.controller.getUsers);
 
+    this.router.post(`${this.path}`, this.controller.createUser);
+
     return this.router;
   }
 }
