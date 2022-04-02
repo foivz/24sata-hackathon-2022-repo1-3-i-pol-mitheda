@@ -1,17 +1,17 @@
-import { NextFunction, Request, Response } from "express";
-import HttpException from "../../utils/exception/http.exception";
 import { prismaClient } from "../../utils/prisma.utils";
 
 export class UsersController {
   public getUsers = async (req: any, res: any) => {
     try {
-      const users = await prismaClient.users.findMany({});
+      const users = await prismaClient.users.findMany();
 
-      if (!users) throw new HttpException(404, "No users found");
+      if (!users) {
+        return res.status(404).json({ message: "No users found" });
+      }
 
-      return users;
+      return res.status(200).json(users);
     } catch (error: any) {
-      throw new HttpException(500, JSON.stringify(error));
+      return res.status(500).json({ error });
     }
   };
 
@@ -29,11 +29,13 @@ export class UsersController {
         },
       });
 
-      if (!newUser) throw new HttpException(400, "Bad request");
+      if (!newUser) {
+        return res.status(404).json({ message: "Failed to create resource" });
+      }
 
-      res.status(201).json(newUser);
+      return res.status(201).json(newUser);
     } catch (error) {
-      throw new HttpException(500, "Internal server error");
+      return res.status(500).json({ error });
     }
   };
 
@@ -47,11 +49,13 @@ export class UsersController {
         },
       });
 
-      if (!user) throw new HttpException(404, "No user found");
+      if (!user) {
+        return res.status(404).json({ message: "No user found" });
+      }
 
       return user;
     } catch (error) {
-      throw new HttpException(500, JSON.stringify(error));
+      return res.status(500).json({ error });
     }
   };
 
@@ -59,17 +63,24 @@ export class UsersController {
     try {
       const { id } = req.params;
 
+      console.log("ID", id);
+
       const user = await prismaClient.users.findUnique({
         where: {
-          id: id,
+          id: Number(id),
         },
       });
 
-      if (!user) throw new HttpException(404, "No user found");
+      console.log("user", user);
 
-      return user;
+      if (!user) {
+        return res.status(404).json({ message: "No user found" });
+      }
+
+      return res.status(200).json(user);
     } catch (error) {
-      throw new HttpException(500, JSON.stringify(error));
+      console.log(error);
+      return res.status(500).json({ error });
     }
   };
 
@@ -77,19 +88,35 @@ export class UsersController {
     try {
       const { id } = req.params;
 
-      if (!id) throw new HttpException(400, 'Missing "id" param');
+      if (!id) {
+        return res.status(400).json({ message: "Missing 'id' param" });
+      }
 
       const user = prismaClient.users.delete({
         where: {
-          id: id,
+          id: Number(id),
         },
       });
 
-      if (!user) throw new HttpException(404, "No user found");
+      if (!user) {
+        return res.status(404).json({ message: "No user found" });
+      }
 
       return res.status(204);
     } catch (error: any) {
-      throw new HttpException(500, JSON.stringify(error));
+      return res.status(500).json({ error });
     }
   };
+
+  // getUserAccounts = async (req: any, res: any) => {
+  //   try {
+  //     const {id} = req.params
+
+  //     if(!id) throw new HttpException(400, 'Missing user "id" param')
+
+  //     const userAccounts = await prismaCient.users.
+  //   } catch (error:any) {
+  //     return res.status(500).json({ error });
+  //   }
+  // }
 }

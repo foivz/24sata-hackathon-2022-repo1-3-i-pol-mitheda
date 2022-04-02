@@ -86,7 +86,7 @@ app.get("/scan", async (req, res, next) => {
   } catch (e) {
     console.log(e);
   } finally {
-    res.json(obj);
+    return res.json(obj);
   }
 });
 

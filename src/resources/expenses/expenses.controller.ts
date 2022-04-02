@@ -1,22 +1,23 @@
-import HttpException from "../../utils/exception/http.exception";
 import { prismaClient } from "../../utils/prisma.utils";
 export class ExpenseController {
   public getExpenses = async (req: any, res: any) => {
     try {
       const expenses = await prismaClient.expenses.findMany({});
 
-      if (!expenses) throw new HttpException(400, "Something went wrong");
+      if (!expenses) return res.status(400).sent("Something went wrong");
 
       return res.status(200).json(expenses);
     } catch (error: any) {
-      throw new HttpException(500, JSON.stringify(error));
+      return res.status(500).json({ error });
     }
   };
 
   public getExpense = async (req: any, res: any) => {
     const { id } = req.params;
 
-    if (!id) throw new HttpException(409, "Missing id parameter");
+    if (!id) {
+      return res.status(400).json({ message: "Something went wrong" });
+    }
 
     try {
       const expense = await prismaClient.expenses.findUnique({
@@ -25,11 +26,13 @@ export class ExpenseController {
         },
       });
 
-      if (!expense) throw new HttpException(404, "No resource found");
+      if (!expense) {
+        return res.status(200).json({ message: "No resource found" });
+      }
 
       return res.status(200).json(expense);
     } catch (error: any) {
-      throw new HttpException(500, JSON.stringify(error));
+      return res.status(500).json({ error });
     }
   };
 
@@ -48,7 +51,7 @@ export class ExpenseController {
 
       return res.status(200).json(newExpense);
     } catch (error: any) {
-      throw new HttpException(500, JSON.stringify(error));
+      return res.status(500).json({ error });
     }
   };
 
@@ -56,19 +59,20 @@ export class ExpenseController {
     try {
       const { id } = req.params;
 
-      if (!id) throw new HttpException(409, "Invalid id");
+      if (!id) return res.status(400).json({ message: "Invalid id" });
 
-      const expense = prismaClient.expenses.delete({
+      const expense = await prismaClient.expenses.delete({
         where: {
           id: id,
         },
       });
 
-      if (!expense) throw new HttpException(404, "No expense found");
-
+      if (!expense) {
+        return res.status(400).json({ message: "No expense found" });
+      }
       return res.status(204);
     } catch (error: any) {
-      throw new HttpException(500, JSON.stringify(error));
+      return res.status(500).json({ error });
     }
   };
 }
