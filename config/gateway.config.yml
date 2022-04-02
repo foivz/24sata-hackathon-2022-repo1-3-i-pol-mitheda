@@ -1,0 +1,35 @@
+http:
+  port: 8080
+admin:
+  port: 9876
+  host: localhost
+apiEndpoints:
+  # see: http://www.express-gateway.io/docs/configuration/gateway.config.yml/apiEndpoints
+  # ovdje definiramo api servis i njegove rute
+  test:
+    host: localhost
+    paths: ['/test', '/test/*']
+serviceEndpoints:
+  # ovdje definiramo lokalni endpoint (za testing)
+  testService:
+    url: 'http://localhost:1337'
+policies:
+  - basic-auth
+  - cors
+  - expression
+  - key-auth
+  - log
+  - oauth2
+  - proxy
+  - rate-limit
+pipelines:
+  # see: https://www.express-gateway.io/docs/configuration/gateway.config.yml/pipelines
+  # ovdje definiramo vezu izmedu api servisa i njegovog endpointa
+  userPipeline:
+    apiEndpoints:
+      - test
+    policies:
+      - proxy:
+          - action:
+              serviceEndpoint: testService
+              changeOrigin: true
