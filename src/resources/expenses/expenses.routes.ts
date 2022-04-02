@@ -22,6 +22,13 @@ export class ExpenseRoutes {
     );
 
     /**
+     * Get all expenses
+     * GET
+     * /expenses/user/:userId
+     */
+    this.router.get(`${this.path}`, this.controller.getUserExpenses);
+
+    /**
      * Get expense by id
      * GET
      * /expenses/:id
