@@ -1,9 +1,10 @@
 import { Router } from "express";
 import { AccountsController } from "./accounts.controller";
+import { createAccountValidation } from "./accounts.validation";
 
 export class AccountRoutes {
   private router = Router();
-  private path = "/acounts";
+  private path = "/accounts";
 
   private controller = new AccountsController();
 
@@ -24,13 +25,17 @@ export class AccountRoutes {
      * Create account
      * /accounts
      */
-    this.router.post(`${this.path}/:id`, this.controller.createAccount);
+    this.router.post(
+      `${this.path}`,
+      createAccountValidation,
+      this.controller.createAccount
+    );
 
     /**
      * Create account
      * /accounts
      */
-    this.router.patch(`${this.path}/:id`, this.controller.updateAccoutState);
+    this.router.patch(`${this.path}/:id`, this.controller.updateAccout);
 
     return this.router;
   }

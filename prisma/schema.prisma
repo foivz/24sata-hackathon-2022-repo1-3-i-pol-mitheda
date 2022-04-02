@@ -8,10 +8,11 @@ datasource db {
 }
 
 model accounts {
-  id      Int    @id @unique(map: "id_UNIQUE") @default(autoincrement())
-  balance Float? @db.Float
+  id      Int     @id @unique(map: "id_UNIQUE") @default(autoincrement())
+  balance Float?  @db.Float
   user_id Int
-  users   users  @relation(fields: [user_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "uac")
+  name    String? @db.VarChar(255)
+  users   users   @relation(fields: [user_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "uac")
 
   @@index([user_id], map: "uac_idx")
 }

@@ -9,7 +9,7 @@ export class AccountsController {
         return res.status(404).json({ message: "No accounts found" });
       }
 
-      return accounts;
+      return res.status(200).json(accounts);
     } catch (error) {
       return res.status(500).json({ error });
     }
@@ -37,20 +37,19 @@ export class AccountsController {
     }
   };
 
-  updateAccoutState = async (req: any, res: any) => {
+  updateAccout = async (req: any, res: any) => {
     try {
-      const { balance } = req.body;
+      const data = req.body;
       const { id } = req.params;
 
-      if (!balance) {
-        return res.status(400).json({ message: "Missing balance property" });
+      if (!id) {
+        return res.status(400).json({ message: "Missing id parameter" });
       }
 
-      if (!balance) {
-        return res.status(400).json({ message: "Missing balance property" });
-      }
-
-      const account = await prismaClient.accounts.findUnique({
+      const account = await prismaClient.accounts.update({
+        data: {
+          ...data,
+        },
         where: {
           id: Number(id),
         },
@@ -68,22 +67,23 @@ export class AccountsController {
 
   createAccount = async (req: any, res: any) => {
     try {
-      const { balance, user_id } = req.body;
+      const { name, balance, user_id } = req.body;
 
-      const user = prismaClient.accounts.create({
+      const account = await prismaClient.accounts.create({
         data: {
+          name: name,
           balance: Number(balance),
           user_id: Number(user_id) ?? res.locals.userId,
         },
       });
 
-      if (!user) {
+      if (!account) {
         return res.status(400).json({
           message: "Failed to create resource",
         });
       }
 
-      return res.status(201).json(user);
+      return res.status(201).json(account);
     } catch (error) {
       return res.status(500).json({ error });
     }

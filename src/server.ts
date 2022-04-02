@@ -14,5 +14,6 @@ import "./test/service";
 import "./invoice-scanner/invoice-scanner";
 import "./resources/users/users";
 import "./resources/expenses/expenses";
+import "./resources/accounts/accounts";
 
 gateway().load(path.join(__dirname, "..", "config")).run();
