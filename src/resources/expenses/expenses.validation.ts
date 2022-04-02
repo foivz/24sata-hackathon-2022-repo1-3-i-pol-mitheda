@@ -18,7 +18,7 @@ export const createExpenseSchema = (req: any, res: any, next: any) => {
 
   const options = {
     abortEarly: false,
-    allowUnknown: true,
+    allowUnknown: false,
   };
 
   const { error, value } = createExpenseSchema.validate(req.body, options);

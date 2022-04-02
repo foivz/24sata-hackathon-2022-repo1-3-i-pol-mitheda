@@ -18,6 +18,9 @@ apiEndpoints:
   invoiceScanner:
     host: localhost
     paths: ["/scan", "/scan/*"]
+  accounts:
+    host: localhost
+    paths: ["/accounts", "/accounts/*"]
 serviceEndpoints:
   # ovdje definiramo lokalni endpoint (za testing)
   testService:
@@ -28,6 +31,8 @@ serviceEndpoints:
     url: "http://localhost:1340"
   invoiceScannerService:
     url: "http://localhost:1338"
+  accountsService:
+    url: "http://localhost:1341"
 policies:
   - basic-auth
   - cors
@@ -73,4 +78,12 @@ pipelines:
       - proxy:
           - action:
               serviceEndpoint: expensesService
+              changeOrigin: true
+  accountsPipeline:
+    apiEndpoints:
+      - accounts
+    policies:
+      - proxy:
+          - action:
+              serviceEndpoint: accountsService
               changeOrigin: true

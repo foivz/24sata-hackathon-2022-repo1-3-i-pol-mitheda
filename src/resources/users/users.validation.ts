@@ -10,7 +10,7 @@ export const createUserValidation = (req: any, res: any, next: any) => {
 
   const options = {
     abortEarly: false,
-    allowUnknown: true,
+    allowUnknown: false,
   };
 
   const { error, value } = createUserSchema.validate(req.body, options);
