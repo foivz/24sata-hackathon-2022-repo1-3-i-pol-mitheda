@@ -179,7 +179,7 @@ export class ExpenseController {
   public updateExpense = async (req: any, res: any) => {
     try {
       const { id } = req.params;
-      const { body } = req.body;
+      const body = req.body;
 
       if (body.token) delete body.token;
 
