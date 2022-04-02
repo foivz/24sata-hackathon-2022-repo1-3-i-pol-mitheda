@@ -23,7 +23,7 @@ export class ExpenseController {
 
       const expenses = await prismaClient.expenses.findMany({
         where: {
-          user_id: userId,
+          user_id: Number(userId),
         },
         include: {
           expense_item: includeItems,
