@@ -38,7 +38,6 @@ export const updateExpenseValidation = (req: any, res: any, next: any) => {
     merchant: Joi.string(),
     date: Joi.date(),
     token: Joi.string().required(),
-    account: Joi.number().required(),
   });
 
   const options = {
