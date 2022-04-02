@@ -1,5 +1,5 @@
 {
-  "Description": "Root Stack for AWS Amplify CLI",
+  "Description": "Root Stack for AWS Amplify Console",
   "AWSTemplateFormatVersion": "2010-09-09",
   "Parameters": {
     "DeploymentBucketName": {
@@ -224,6 +224,29 @@
           },
           "deploymentBucketName": "amplify-gateway-dev-210938-deployment",
           "s3Key": "amplify-builds/lexccdb095a-4e5a4d7a5548742f474c-build.zip",
+          "env": "dev"
+        }
+      }
+    },
+    "interactionschatbotgazdx": {
+      "Type": "AWS::CloudFormation::Stack",
+      "Properties": {
+        "TemplateURL": "https://s3.amazonaws.com/amplify-gateway-dev-210938-deployment/amplify-cfn-templates/interactions/chatbotgazdx-cloudformation-template.json",
+        "Parameters": {
+          "authRoleArn": {
+            "Fn::GetAtt": [
+              "AuthRole",
+              "Arn"
+            ]
+          },
+          "authRoleName": {
+            "Ref": "AuthRoleName"
+          },
+          "unauthRoleName": {
+            "Ref": "UnauthRoleName"
+          },
+          "deploymentBucketName": "amplify-gateway-dev-210938-deployment",
+          "s3Key": "amplify-builds/chatbotgazdx-476149504a56725a6174-build.zip",
           "env": "dev"
         }
       }

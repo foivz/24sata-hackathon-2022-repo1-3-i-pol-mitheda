@@ -1,12 +1,12 @@
 import { prismaClient } from "../../utils/prisma.utils";
 export class ExpenseController {
   public getExpenses = async (req: any, res: any) => {
-    const { items } = req.query;
+
 
     try {
       const expenses = await prismaClient.expenses.findMany({
         include: {
-          expense_item: JSON.parse(items),
+          expense_item: true,
         },
       });
 
@@ -19,7 +19,11 @@ export class ExpenseController {
   };
 
   public getExpense = async (req: any, res: any) => {
-    const { id } = req.params;
+    let { id } = req.params;
+
+    if (!id) id = res.locals.userId;
+
+    
 
     if (!id) {
       return res.status(400).json({ message: "Something went wrong" });
