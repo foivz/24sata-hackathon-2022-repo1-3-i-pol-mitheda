@@ -1,7 +1,7 @@
 import Joi from "joi";
 
-export const createExpenseSchema = (req: any, res: any, next: any) => {
-  const createExpenseSchema = Joi.object({
+export const createUserSchema = (req: any, res: any, next: any) => {
+  const createUserSchema = Joi.object({
     title: Joi.string(),
     merchant: Joi.string(),
     date: Joi.date(),
@@ -21,7 +21,7 @@ export const createExpenseSchema = (req: any, res: any, next: any) => {
     allowUnknown: true,
   };
 
-  const { error, value } = createExpenseSchema.validate(req.body, options);
+  const { error, value } = createUserSchema.validate(req.body, options);
 
   if (error) {
     res.status(400).json({

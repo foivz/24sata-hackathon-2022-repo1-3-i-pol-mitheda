@@ -2,10 +2,13 @@ import { prismaClient } from "../../utils/prisma.utils";
 
 export class UsersController {
   public getUsers = async (req: any, res: any) => {
+    const includeAccounts = req.query.accounts ?? false;
+    const includeExpenses = req.query.expenses ?? false;
     try {
       const users = await prismaClient.users.findMany({
         include: {
-          accounts: true,
+          accounts: includeAccounts,
+          expenses: includeExpenses,
         },
       });
 

@@ -73,7 +73,7 @@ export class AccountsController {
       const user = prismaClient.accounts.create({
         data: {
           balance: Number(balance),
-          user_id: Number(user_id),
+          user_id: Number(user_id) ?? res.locals.userId,
         },
       });
 

@@ -43,8 +43,6 @@ export class ExpenseController {
   public createExpense = async (req: any, res: any) => {
     try {
       const { title, merchant, user_id } = req.body;
-      console.log("ID", res.locals.userId);
-      console.log("LOCALS", res.locals);
 
       const newExpense = await prismaClient.expenses.create({
         data: {
