@@ -29,11 +29,15 @@ export class ExpenseRoutes {
      * GET
      * /expenses/user/:userId
      */
+<<<<<<< HEAD
+    this.router.get(`${this.path}/user`, this.controller.getUserExpenses);
+=======
     this.router.get(
       `${this.path}/user`,
       authMiddleware,
       this.controller.getUserExpenses
     );
+>>>>>>> a5bb42c9b43816b6b993451ee5d44436e37e4f38
 
     /**
      * Get expense by id
