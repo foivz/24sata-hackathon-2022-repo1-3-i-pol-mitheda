@@ -46,6 +46,7 @@ model users {
   email         String?    @unique(map: "email_UNIQUE") @db.VarChar(255)
   password      String?    @db.VarChar(255)
   account_state Float?     @db.Float
+  cognito_id    String     @db.VarChar(255)
   accounts      accounts[]
   expenses      expenses[]
 }
