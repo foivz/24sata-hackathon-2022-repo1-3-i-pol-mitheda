@@ -1,3 +1,4 @@
+import { randomNum } from "../../../hakerske-skripte/custom-seeder";
 import { prismaClient } from "../../utils/prisma.utils";
 
 export class CategoryController {
@@ -12,6 +13,40 @@ export class CategoryController {
       }
 
       return res.status(200).json(categories.map((c) => c.category));
+    } catch (error) {
+      console.log(error);
+      return res.status(500).json({ error });
+    }
+  };
+
+  seedCategories = async (req: any, res: any) => {
+    try {
+      const expenses = await prismaClient.expenses.findMany({});
+
+      const cats = await prismaClient.category.findMany({});
+
+      let categories = cats.map((m) => m.category);
+
+      console.log(categories);
+      console.log(expenses);
+
+      const newExpenses = expenses.map((ex) => {
+        ex.category = categories[randomNum(0, expenses.length)];
+        return ex;
+      });
+
+      newExpenses.forEach(async (newExpense) => {
+        await prismaClient.expenses.update({
+          where: {
+            id: newExpense.id,
+          },
+          data: {
+            category: newExpense.category,
+          },
+        });
+      });
+
+      return res.status(204).send();
     } catch (error) {
       console.log(error);
       return res.status(500).json({ error });

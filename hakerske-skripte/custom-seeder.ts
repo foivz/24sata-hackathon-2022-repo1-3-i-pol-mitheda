@@ -29,7 +29,7 @@ const randomMerchant = () => {
   ];
 };
 
-const randomNum = (min = 0, max = 100): number => {
+export const randomNum = (min = 0, max = 100): number => {
   let difference = max - min;
 
   let rand = Math.random();
