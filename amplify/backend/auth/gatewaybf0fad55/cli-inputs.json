@@ -1,10 +1,10 @@
 {
   "version": "1",
   "cognitoConfig": {
-    "identityPoolName": "hackathon24h01977b36_identitypool_01977b36",
+    "identityPoolName": "gatewaybf0fad55_identitypool_bf0fad55",
     "allowUnauthenticatedIdentities": false,
-    "resourceNameTruncated": "hackat01977b36",
-    "userPoolName": "hackathon24h01977b36_userpool_01977b36",
+    "resourceNameTruncated": "gatewabf0fad55",
+    "userPoolName": "gatewaybf0fad55_userpool_bf0fad55",
     "autoVerifiedAttributes": [
       "email"
     ],
@@ -31,10 +31,10 @@
     "userpoolClientReadAttributes": [
       "email"
     ],
-    "userpoolClientLambdaRole": "hackat01977b36_userpoolclient_lambda_role",
+    "userpoolClientLambdaRole": "gatewabf0fad55_userpoolclient_lambda_role",
     "userpoolClientSetAttributes": false,
-    "sharedId": "01977b36",
-    "resourceName": "hackathon24h01977b36",
+    "sharedId": "bf0fad55",
+    "resourceName": "gatewaybf0fad55",
     "authSelections": "identityPoolAndUserPool",
     "useDefault": "default",
     "userPoolGroupList": [],

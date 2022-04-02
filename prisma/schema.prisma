@@ -35,10 +35,10 @@ model expenses {
   date         DateTime?      @db.DateTime(0)
   user_id      Int
   created_at   DateTime?      @default(now()) @db.DateTime(0)
-  users        users          @relation(fields: [user_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "uzg")
+  account_id   Int
   expense_item expense_item[]
 
-  @@index([user_id], map: "uzg_idx")
+  @@index([account_id], map: "expenseaccount_idx")
 }
 
 model users {
@@ -49,5 +49,4 @@ model users {
   account_state Float?     @db.Float
   cognito_id    String     @unique(map: "cognito_id_UNIQUE") @db.VarChar(255)
   accounts      accounts[]
-  expenses      expenses[]
 }
