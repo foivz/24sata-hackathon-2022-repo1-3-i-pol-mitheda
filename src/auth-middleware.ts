@@ -4,7 +4,7 @@ import jwt_decode from "jwt-decode";
 import { prismaClient } from "./utils/prisma.utils";
 
 export default async function authMiddleware(req: any, res: any, next: any) {
-    const token = req.body.token ?? null;
+    const token = req.body.token ?? req.query.token ?? null;
     if (token) {
       try {
         const decoded: { [key: string]: any } | null = jwt_decode(token);
