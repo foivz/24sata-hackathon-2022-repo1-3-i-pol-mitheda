@@ -26,7 +26,7 @@ const tryParseDate = (date?: string) => {
   }
 };
 
-app.get("/scan", async (req, res, next) => {
+app.post("/scan", async (req, res, next) => {
   const obj = {
     merchant: "",
     date: "",

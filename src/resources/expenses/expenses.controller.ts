@@ -1,19 +1,44 @@
 import { prismaClient } from "../../utils/prisma.utils";
 export class ExpenseController {
   public getExpenses = async (req: any, res: any) => {
-
-
     try {
-      const expenses = await prismaClient.expenses.findMany({
-        include: {
-          expense_item: true,
-        },
-      });
+      const expenses = await prismaClient.expenses.findMany({});
 
       if (!expenses) return res.status(400).sent("Something went wrong");
 
       return res.status(200).json(expenses);
     } catch (error: any) {
+      return res.status(500).json({ error });
+    }
+  };
+
+  public getUserExpenses = async (req: any, res: any) => {
+    try {
+      let { userId } = req.params;
+      const { items } = req.query;
+
+      const includeItems = items ? JSON.parse(items) : false;
+
+      if (!userId) userId = res.locals.userId;
+
+      const expenses = await prismaClient.expenses.findMany({
+        where: {
+          user_id: Number(userId),
+        },
+        include: {
+          expense_item: includeItems,
+        },
+      });
+
+      if (!expenses) {
+        return res.status(404).json({
+          message: "No expenses found",
+        });
+      }
+
+      return res.status(200).json(expenses);
+    } catch (error) {
+      console.log("[ERROR]", error);
       return res.status(500).json({ error });
     }
   };
@@ -48,7 +73,7 @@ export class ExpenseController {
 
   public createExpense = async (req: any, res: any) => {
     try {
-      const { title, merchant, account, date } = req.body;
+      const { merchant, account, date } = req.body;
 
       let { userId } = req.body;
 
@@ -74,7 +99,6 @@ export class ExpenseController {
 
       const newExpense = await prismaClient.expenses.create({
         data: {
-          title: title ?? "",
           merchant: merchant ?? "",
           date: date ?? new Date(),
           account_id: account,
@@ -126,6 +150,18 @@ export class ExpenseController {
 
       if (!id) return res.status(400).json({ message: "Invalid id" });
 
+      const item = await prismaClient.expense_item.deleteMany({
+        where: {
+          expense_id: Number(id),
+        },
+      });
+
+      if (!item) {
+        return res.status(400).json({
+          message: "Failed to delete items",
+        });
+      }
+
       const expense = await prismaClient.expenses.delete({
         where: {
           id: Number(id),
@@ -133,10 +169,48 @@ export class ExpenseController {
       });
 
       if (!expense) {
-        return res.status(400).json({ message: "No expense found" });
+        return res.status(400).json({
+          message: "Failed to delete expense",
+        });
       }
+
       return res.status(204);
     } catch (error: any) {
+      return res.status(500).json({ error });
+    }
+  };
+
+  public updateExpense = async (req: any, res: any) => {
+    try {
+      const { id } = req.params;
+      const body = req.body;
+
+      if (body.token) delete body.token;
+
+      if (!id) {
+        return res.status(400).json({
+          message: "Missing id param",
+        });
+      }
+
+      const updatedExpense = await prismaClient.expenses.update({
+        where: {
+          id: Number(id),
+        },
+        data: {
+          ...body,
+        },
+      });
+
+      if (!updatedExpense) {
+        return res.status(400).json({
+          message: "Failed to update expense",
+        });
+      }
+
+      return res.status(200).json(updatedExpense);
+    } catch (error) {
+      console.log(error);
       return res.status(500).json({ error });
     }
   };
