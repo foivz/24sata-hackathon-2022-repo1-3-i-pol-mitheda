@@ -30,16 +30,19 @@ model expense_item {
 }
 
 model expenses {
-  id           Int            @id @unique(map: "id_UNIQUE") @default(autoincrement())
-  title        String         @db.VarChar(255)
-  merchant     String?        @db.VarChar(255)
-  date         DateTime?      @db.DateTime(0)
-  user_id      Int
-  created_at   DateTime?      @default(now()) @db.DateTime(0)
-  account_id   Int
-  accounts     accounts       @relation(fields: [account_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "accid")
-  expense_item expense_item[]
+  id                          Int            @id @unique(map: "id_UNIQUE") @default(autoincrement())
+  title                       String         @default("Untitled expense") @db.VarChar(255)
+  merchant                    String?        @db.VarChar(255)
+  date                        DateTime?      @db.DateTime(0)
+  user_id                     Int
+  created_at                  DateTime?      @default(now()) @db.DateTime(0)
+  account_id                  Int
+  category                    String?        @db.VarChar(255)
+  accounts                    accounts       @relation(fields: [account_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "accid")
+  category_categoryToexpenses category?      @relation(fields: [category], references: [category], onDelete: NoAction, onUpdate: NoAction, map: "catid")
+  expense_item                expense_item[]
 
+  @@index([category], map: "catid_idx")
   @@index([account_id], map: "expenseaccount_idx")
   @@index([user_id], map: "user_expense_idx")
 }
@@ -52,4 +55,9 @@ model users {
   account_state Float?     @db.Float
   cognito_id    String     @unique(map: "cognito_id_UNIQUE") @db.VarChar(255)
   accounts      accounts[]
+}
+
+model category {
+  category String     @id @unique(map: "category_UNIQUE") @db.VarChar(255)
+  expenses expenses[]
 }
