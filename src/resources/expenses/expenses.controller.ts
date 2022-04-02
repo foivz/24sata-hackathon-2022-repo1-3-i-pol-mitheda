@@ -8,8 +8,8 @@ export class ExpenseController {
       if (!expenses) throw new HttpException(400, "Something went wrong");
 
       return res.status(200).json(expenses);
-    } catch (error) {
-      throw new HttpException(500, "internal server error");
+    } catch (error: any) {
+      throw new HttpException(500, JSON.stringify(error));
     }
   };
 
@@ -28,24 +28,47 @@ export class ExpenseController {
       if (!expense) throw new HttpException(404, "No resource found");
 
       return res.status(200).json(expense);
-    } catch (error) {
-      throw new HttpException(500, "Internal server error");
+    } catch (error: any) {
+      throw new HttpException(500, JSON.stringify(error));
     }
   };
 
   public createExpense = async (req: any, res: any) => {
     try {
-      const expense = req.body;
+      const { title, merchant, date, user_id } = req.body;
 
       const newExpense = await prismaClient.expenses.create({
         data: {
-          ...expense,
+          title,
+          merchant,
+          date,
+          user_id,
         },
       });
 
       return res.status(200).json(newExpense);
     } catch (error: any) {
-      throw new HttpException(500, error);
+      throw new HttpException(500, JSON.stringify(error));
+    }
+  };
+
+  public deleteExpense = async (req: any, res: any) => {
+    try {
+      const { id } = req.params;
+
+      if (!id) throw new HttpException(409, "Invalid id");
+
+      const expense = prismaClient.expenses.delete({
+        where: {
+          id: id,
+        },
+      });
+
+      if (!expense) throw new HttpException(404, "No expense found");
+
+      return res.status(204);
+    } catch (error: any) {
+      throw new HttpException(500, JSON.stringify(error));
     }
   };
 }
