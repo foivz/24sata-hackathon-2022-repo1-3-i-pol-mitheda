@@ -23,6 +23,30 @@ export class UsersController {
     console.log("REQ-BODY", req.body);
     const { username, email, password, cognito_id } = req.body;
 
+    let existingUser = prismaClient.users.findUnique({
+      where: {
+        username: username,
+      },
+    });
+
+    if (existingUser != null) {
+      return res.status(409).json({
+        message: "User with this username already exists",
+      });
+    }
+
+    existingUser = prismaClient.users.findUnique({
+      where: {
+        email: email,
+      },
+    });
+
+    if (existingUser != null) {
+      return res.status(409).json({
+        message: "User with this email already exists",
+      });
+    }
+
     try {
       const newUser = await prismaClient.users.create({
         data: {
@@ -37,7 +61,23 @@ export class UsersController {
         return res.status(404).json({ message: "Failed to create resource" });
       }
 
-      return res.status(201).json(newUser);
+      const newAccount = prismaClient.accounts.create({
+        data: {
+          balance: 0,
+          user_id: Number(newUser.id),
+        },
+      });
+
+      if (!newAccount) {
+        return res.status(400).json({
+          message: "User created but failed to create account",
+        });
+      }
+
+      return res.status(201).json({
+        user: newUser,
+        account: newAccount,
+      });
     } catch (error) {
       return res.status(500).json({ error });
     }

@@ -1,4 +1,5 @@
 import { Router } from "express";
+import authMiddleware from "../../auth-middleware";
 import { ExpenseController } from "./expenses.controller";
 
 export class ExpenseRoutes {
@@ -13,21 +14,29 @@ export class ExpenseRoutes {
      * GET
      * /expenses
      */
-    this.router.get(`${this.path}`, this.controller.getExpenses);
+    this.router.get(
+      `${this.path}`,
+      authMiddleware,
+      this.controller.getExpenses
+    );
 
     /**
      * Get expense by id
      * GET
      * /expenses/:id
      */
-    this.router.get(`${this.path}`, this.controller.getExpense);
+    this.router.get(`${this.path}`, authMiddleware, this.controller.getExpense);
 
     /**
      * Create expense
      * POST
      * /expenses
      */
-    this.router.post(`${this.path}`, this.controller.createExpense);
+    this.router.post(
+      `${this.path}`,
+      authMiddleware,
+      this.controller.createExpense
+    );
 
     /**
      * Create expense

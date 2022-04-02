@@ -43,15 +43,47 @@ export class ExpenseController {
   public createExpense = async (req: any, res: any) => {
     try {
       const { title, merchant, user_id } = req.body;
+      console.log("ID", res.locals.userId);
+      console.log("LOCALS", res.locals);
 
       const newExpense = await prismaClient.expenses.create({
         data: {
           title,
           merchant,
           date: new Date(),
-          user_id: Number(user_id),
+          user_id: user_id ? Number(user_id) : res.locals.userId,
         },
       });
+
+      if (!newExpense) {
+        return res.status(400).json({
+          message: "Failed to create resource",
+        });
+      }
+
+      const expenseId = newExpense.id;
+
+      let expenseItems;
+
+      if (req.body.items) {
+        const { items } = req.body;
+        expenseItems = prismaClient.expense_item.createMany({
+          data: items.map((item) => ({
+            title: Number(item.title),
+            price: Number(item.price),
+            amount: Number(item.amount),
+            expense_id: expenseId,
+          })),
+        });
+
+        if (!expenseItems) {
+          return res.status(400).json({
+            message: "Expense saved butt failed to save items",
+          });
+        }
+      }
+
+      if (expenseItems) newExpense["expense_items"] = expenseItems;
 
       return res.status(200).json(newExpense);
     } catch (error: any) {
