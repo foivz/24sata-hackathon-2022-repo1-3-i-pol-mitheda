@@ -67,73 +67,76 @@
 // }
 
 // async function main() {
-//   await prisma.users.create({
+//     await prisma.users.create({
+//       data: {
+//         email: randomUUID().toString(),
+//         username: randomUUID().toString(),
+//         cognito_id: randomUUID().toString(),
+//         accounts: {
+//           create: {
+//             balance: 100.23,
+//             name: "ZABA",
+//             expenses: {
+//               create: [
+//                   {
+//                     title: "",
+//                     date: randomDate(new Date(2022, 2, 1), new Date()),
+//                     merchant: randomMerchant(),
+//                     expense_item: {
+//                       createMany: {
+//                         data: randomItems(),
+//                       },
+//                     },
+//                   },
+
+//                 ],
+//             },
+//           },
+//         },
+//       },
+//     });
+
+//   await prisma.expenses.create({
 //     data: {
-//       email: randomUUID().toString(),
-//       username: randomUUID().toString(),
-//       expenses: {
-//         create: [
-//           {
-//             title: "",
-//             date: randomDate(new Date(2022, 2, 1), new Date()),
-//             merchant: randomMerchant(),
-//             expense_item: {
-//               createMany: {
-//                 data: randomItems(),
-//               },
-//             },
-//           },
-//           {
-//             title: "",
-//             date: randomDate(new Date(2022, 2, 1), new Date()),
-//             merchant: randomMerchant(),
-//             expense_item: {
-//               createMany: {
-//                 data: randomItems(),
-//               },
-//             },
-//           },
-//           {
-//             title: "",
-//             date: randomDate(new Date(2022, 2, 1), new Date()),
-//             merchant: randomMerchant(),
-//             expense_item: {
-//               createMany: {
-//                 data: randomItems(),
-//               },
-//             },
-//           },
-//           {
-//             title: "",
-//             date: randomDate(new Date(2022, 2, 1), new Date()),
-//             merchant: randomMerchant(),
-//             expense_item: {
-//               createMany: {
-//                 data: randomItems(),
-//               },
-//             },
-//           },
-//           {
-//             title: "",
-//             date: randomDate(new Date(2022, 2, 1), new Date()),
-//             merchant: randomMerchant(),
-//             expense_item: {
-//               createMany: {
-//                 data: randomItems(),
-//               },
-//             },
-//           },
-//           {
-//             title: "",
-//             date: randomDate(new Date(2022, 2, 1), new Date()),
-//             merchant: randomMerchant(),
-//             expense_item: {
-//               createMany: {
-//                 data: randomItems(),
-//               },
-//             },
-//           },
-//         ],
+//       user_id: 103,
+//       account_id: 5,
+//       title: "",
+//       date: randomDate(new Date(2022, 2, 1), new Date()),
+//       merchant: randomMerchant(),
+//       expense_item: {
+//         createMany: {
+//           data: randomItems(),
+//         },
+//       },
+//     },
+//   });
+
+//   await prisma.expenses.create({
+//     data: {
+//       user_id: 103,
+//       account_id: 5,
+//       title: "",
+//       date: randomDate(new Date(2022, 2, 1), new Date()),
+//       merchant: randomMerchant(),
+//       expense_item: {
+//         createMany: {
+//           data: randomItems(),
+//         },
+//       },
+//     },
+//   });
+
+//   await prisma.expenses.create({
+//     data: {
+//       user_id: 103,
+//       account_id: 5,
+//       title: "",
+//       date: randomDate(new Date(2022, 2, 1), new Date()),
+//       merchant: randomMerchant(),
+//       expense_item: {
+//         createMany: {
+//           data: randomItems(),
+//         },
 //       },
 //     },
 //   });
