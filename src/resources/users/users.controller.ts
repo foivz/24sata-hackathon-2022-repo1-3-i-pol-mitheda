@@ -100,7 +100,7 @@ export class UsersController {
         return res.status(400).json({ message: "Missing 'id' param" });
       }
 
-      const user = prismaClient.users.delete({
+      const user = await prismaClient.users.delete({
         where: {
           id: Number(id),
         },
@@ -112,19 +112,56 @@ export class UsersController {
 
       return res.status(204);
     } catch (error: any) {
+      console.log(error);
       return res.status(500).json({ error });
     }
   };
 
-  // getUserAccounts = async (req: any, res: any) => {
-  //   try {
-  //     const {id} = req.params
+  updateUser = async (req: any, res: any) => {
+    try {
+      const { id } = req.params;
+      let username, password;
 
-  //     if(!id) throw new HttpException(400, 'Missing user "id" param')
+      if (!id) {
+        return res.status(400).json({
+          message: "Missing ID parameter",
+        });
+      }
 
-  //     const userAccounts = await prismaCient.users.
-  //   } catch (error:any) {
-  //     return res.status(500).json({ error });
-  //   }
-  // }
+      if (req.body.username) username = req.body.username;
+      if (req.body.password) password = req.body.password;
+
+      const user = prismaClient.users.findUnique({
+        where: {
+          id: Number(id),
+        },
+      });
+
+      if (!user) {
+        return res.status(404).json({
+          message: "No user found",
+        });
+      }
+
+      const updatedUser = await prismaClient.users.update({
+        where: {
+          id: Number(id),
+        },
+        data: {
+          username: username ? username : undefined,
+          password: password ? password : undefined,
+        },
+      });
+
+      if (!updatedUser) {
+        return res.status(400).json({
+          message: "Couldn't update user",
+        });
+      }
+
+      res.status(200).json(updatedUser);
+    } catch (error) {
+      return res.status(500).json({ error });
+    }
+  };
 }
