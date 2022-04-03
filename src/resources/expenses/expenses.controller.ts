@@ -1,4 +1,14 @@
 import { prismaClient } from "../../utils/prisma.utils";
+import AWS from "aws-sdk";
+
+// AWS.config.update({
+//   'region': 'eu-central-1',
+//   accessKeyId: "AKIAWM2KFIT376XTPBU5",
+//   secretAccessKey: "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",
+// });
+
+// let personalizeEvents = new AWS.PersonalizeEvents();
+
 export class ExpenseController {
   public getExpenses = async (req: any, res: any) => {
     try {
@@ -47,8 +57,6 @@ export class ExpenseController {
     let { id } = req.params;
 
     if (!id) id = res.locals.userId;
-
-    
 
     if (!id) {
       return res.status(400).json({ message: "Something went wrong" });
@@ -136,6 +144,22 @@ export class ExpenseController {
       }
 
       if (expenseItems) newExpense["expense_items"] = expenseItems;
+
+      // const params = {
+      //   eventList: [
+      //       {
+      //           eventType: 'click',
+      //           sentAt: new Date(),
+      //           properties: expenseItems
+      //       },
+      //   ],
+      //   userId: userId
+      // };
+
+      // personalizeEvents.putEvents(params, function (err, data) {
+      //   if (err) console.log(err, err.stack); // an error occurred
+      //   else     console.log(data);           // successful response
+      // });
 
       return res.status(200).json(newExpense);
     } catch (error: any) {
