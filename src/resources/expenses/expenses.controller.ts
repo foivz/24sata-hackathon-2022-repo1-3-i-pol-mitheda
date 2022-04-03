@@ -26,21 +26,26 @@ export class ExpenseController {
     try {
       const { items } = req.query;
 
+      const { mindate, maxdate } = req.query;
+
       const includeItems = items ? JSON.parse(items) : true;
 
       const userId = res.locals.userId as number;
 
       const userAcc = await prismaClient.users.findUnique({
         where: {
-          id: userId
-        }
-      })
-
+          id: userId,
+        },
+      });
 
       const expenses = await prismaClient.expenses.findMany({
         where: {
           account_id: userAcc?.account_id!,
           isShoppingList: 0,
+          date: {
+            gte: new Date(mindate ? mindate : "01-01-2022"),
+            lte: maxdate ? new Date(maxdate) : new Date(),
+          },
         },
         include: {
           expense_item: includeItems,
@@ -70,10 +75,9 @@ export class ExpenseController {
 
       const userAcc = await prismaClient.users.findUnique({
         where: {
-          id: userId
-        }
-      })
-
+          id: userId,
+        },
+      });
 
       const expenses = await prismaClient.expenses.findMany({
         where: {
@@ -128,15 +132,13 @@ export class ExpenseController {
     try {
       const { merchant, date, category, isShoppingList } = req.body;
 
-
-      const userId = res.locals.userId as number 
-
+      const userId = res.locals.userId as number;
 
       const userAcc = await prismaClient.users.findUnique({
         where: {
-          id: userId
-        }
-      })
+          id: userId,
+        },
+      });
 
       const newExpense = await prismaClient.expenses.create({
         data: {
@@ -162,7 +164,7 @@ export class ExpenseController {
       if (req.body.items) {
         const { items } = req.body;
 
-        console.log(items)
+        console.log(items);
         expenseItems = await prismaClient.expense_item.createMany({
           data: items.map((item) => ({
             title: item.title,
