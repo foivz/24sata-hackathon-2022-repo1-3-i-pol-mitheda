@@ -4,7 +4,19 @@ import { prismaClient } from "../../utils/prisma.utils";
 export class CategoryController {
   getCategories = async (req: any, res: any) => {
     try {
-      const categories = await prismaClient.category.findMany({});
+      let name = "";
+
+      const query = req.query;
+
+      if (query.name) name = query.name;
+
+      const categories = await prismaClient.category.findMany({
+        where: {
+          category: {
+            contains: name,
+          },
+        },
+      });
 
       if (!categories) {
         return res.status(404).json({
