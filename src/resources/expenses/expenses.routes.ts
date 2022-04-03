@@ -36,6 +36,12 @@ export class ExpenseRoutes {
       this.controller.getUserExpenses
     );
 
+    this.router.get(
+      `${this.path}/user/shopping-list`,
+      authMiddleware,
+      this.controller.getUserShoppingList
+    );
+
     /**
      * Get expense by id
      * GET
