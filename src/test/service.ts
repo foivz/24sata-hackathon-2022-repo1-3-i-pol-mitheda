@@ -1,7 +1,6 @@
 import express from "express";
 import { prismaClient } from "../utils/prisma.utils";
 import authMiddleware from "../auth-middleware";
-import { generateExpense } from "../../hakerske-skripte/custom-seeder";
 
 let app = express();
 
@@ -30,8 +29,6 @@ app.get("/test/seed", async (req: any, res: any) => {
 
     //   }
     // });
-
-    generateExpense();
 
     return res.status(204).send();
   } catch (error) {

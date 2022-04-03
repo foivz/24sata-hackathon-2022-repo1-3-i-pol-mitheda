@@ -1,4 +1,3 @@
-import { randomNum } from "../../../hakerske-skripte/custom-seeder";
 import { prismaClient } from "../../utils/prisma.utils";
 
 export class CategoryController {
@@ -31,7 +30,7 @@ export class CategoryController {
     }
   };
 
-  seedCategories = async (req: any, res: any) => {
+  /*   seedCategories = async (req: any, res: any) => {
     try {
       const expenses = await prismaClient.expenses.findMany({});
 
@@ -63,5 +62,5 @@ export class CategoryController {
       console.log(error);
       return res.status(500).json({ error });
     }
-  };
+  }; */
 }
