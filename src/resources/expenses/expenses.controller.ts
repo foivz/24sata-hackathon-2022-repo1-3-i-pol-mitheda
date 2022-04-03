@@ -26,6 +26,8 @@ export class ExpenseController {
     try {
       const { items } = req.query;
 
+      const { mindate, maxdate } = req.query;
+
       const includeItems = items ? JSON.parse(items) : true;
 
       const userId = res.locals.userId as number;
@@ -39,6 +41,10 @@ export class ExpenseController {
       const expenses = await prismaClient.expenses.findMany({
         where: {
           account_id: userAcc?.account_id!,
+          date: {
+            gte: new Date(mindate ? mindate : "01-01-2022"),
+            lte: maxdate ? new Date(maxdate) : new Date(),
+          },
         },
         include: {
           expense_item: includeItems,
@@ -68,10 +74,9 @@ export class ExpenseController {
 
       const userAcc = await prismaClient.users.findUnique({
         where: {
-          id: userId
-        }
-      })
-
+          id: userId,
+        },
+      });
 
       const expenses = await prismaClient.expenses.findMany({
         where: {
@@ -134,17 +139,11 @@ export class ExpenseController {
         },
       });
 
-      if (!userAcc) {
-        return res.status(400).json({
-          message: "No account found",
-        });
-      }
-
       const newExpense = await prismaClient.expenses.create({
         data: {
           merchant: merchant ?? "",
           date: date ?? new Date(),
-          account_id: userAcc?.id!,
+          account_id: userAcc?.account_id!,
           user_id: userId,
           category: category,
         },
@@ -163,7 +162,7 @@ export class ExpenseController {
       if (req.body.items) {
         const { items } = req.body;
 
-        console.log(items)
+        console.log(items);
         expenseItems = await prismaClient.expense_item.createMany({
           data: items.map((item) => ({
             title: item.title,
