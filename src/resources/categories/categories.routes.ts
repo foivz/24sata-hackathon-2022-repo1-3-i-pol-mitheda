@@ -15,7 +15,7 @@ export class CategoryRoutes {
      * /categories
      */
     this.router.get(`${this.path}`, this.controller.getCategories);
-    this.router.get(`${this.path}/cats`, this.controller.seedCategories);
+    //this.router.get(`${this.path}/cats`, this.controller.seedCategories);
 
     return this.router;
   }
