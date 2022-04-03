@@ -58,6 +58,44 @@ export class ExpenseController {
     }
   };
 
+  public getUserShoppingList = async (req: any, res: any) => {
+    try {
+      const { items } = req.query;
+
+      const includeItems = items ? JSON.parse(items) : true;
+
+      const userId = res.locals.userId as number;
+
+      const userAcc = await prismaClient.users.findUnique({
+        where: {
+          id: userId
+        }
+      })
+
+
+      const expenses = await prismaClient.expenses.findMany({
+        where: {
+          account_id: userAcc?.account_id!,
+          isShoppingList: 1,
+        },
+        include: {
+          expense_item: includeItems,
+        },
+      });
+
+      if (!expenses) {
+        return res.status(404).json({
+          message: "No shopping lists found",
+        });
+      }
+
+      return res.status(200).json(expenses);
+    } catch (error) {
+      console.log("[ERROR]", error);
+      return res.status(500).json({ error });
+    }
+  };
+
   public getExpense = async (req: any, res: any) => {
     let { id } = req.params;
 
@@ -86,7 +124,7 @@ export class ExpenseController {
 
   public createExpense = async (req: any, res: any) => {
     try {
-      const { merchant, date } = req.body;
+      const { merchant, date, category } = req.body;
 
       const userId = res.locals.userId as number;
 
@@ -108,6 +146,7 @@ export class ExpenseController {
           date: date ?? new Date(),
           account_id: userAcc?.id!,
           user_id: userId,
+          category: category,
         },
       });
 
@@ -123,9 +162,11 @@ export class ExpenseController {
 
       if (req.body.items) {
         const { items } = req.body;
+
+        console.log(items)
         expenseItems = await prismaClient.expense_item.createMany({
           data: items.map((item) => ({
-            title: Number(item.title),
+            title: item.title,
             price: Number(item.price),
             amount: Number(item.amount),
             expense_id: expenseId,
