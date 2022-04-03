@@ -1,4 +1,14 @@
 import { prismaClient } from "../../utils/prisma.utils";
+import AWS from "aws-sdk";
+
+// AWS.config.update({
+//   'region': 'eu-central-1',
+//   accessKeyId: "AKIAWM2KFIT376XTPBU5",
+//   secretAccessKey: "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",
+// });
+
+// let personalizeEvents = new AWS.PersonalizeEvents();
+
 export class ExpenseController {
   public getExpenses = async (req: any, res: any) => {
     try {
@@ -18,11 +28,17 @@ export class ExpenseController {
 
       const includeItems = items ? JSON.parse(items) : true;
 
-      const userId = res.locals.userId;
+      const userId = res.locals.userId as number;
+
+      const userAcc = await prismaClient.users.findUnique({
+        where: {
+          id: userId,
+        },
+      });
 
       const expenses = await prismaClient.expenses.findMany({
         where: {
-          user_id: Number(userId),
+          account_id: userAcc?.account_id!,
         },
         include: {
           expense_item: includeItems,
@@ -70,35 +86,21 @@ export class ExpenseController {
 
   public createExpense = async (req: any, res: any) => {
     try {
-      const { merchant, account, date } = req.body;
+      const { merchant, date } = req.body;
 
-      let { userId } = req.body;
+      const userId = res.locals.userId as number;
 
-      if (!userId) userId = res.locals.userId;
-
-      const expenseAccount = await prismaClient.accounts.findUnique({
+      const userAcc = await prismaClient.users.findUnique({
         where: {
-          id: Number(account),
+          id: userId,
         },
       });
-
-      if (!expenseAccount) {
-        return res.status(409).json({
-          message: "No account with provided id",
-        });
-      }
-
-      if (expenseAccount.user_id !== userId) {
-        return res.status(409).json({
-          message: "Account doesn't match with user",
-        });
-      }
 
       const newExpense = await prismaClient.expenses.create({
         data: {
           merchant: merchant ?? "",
           date: date ?? new Date(),
-          account_id: account,
+          account_id: userAcc?.account_id!,
           user_id: userId,
         },
       });
@@ -133,6 +135,22 @@ export class ExpenseController {
       }
 
       if (expenseItems) newExpense["expense_items"] = expenseItems;
+
+      // const params = {
+      //   eventList: [
+      //       {
+      //           eventType: 'click',
+      //           sentAt: new Date(),
+      //           properties: expenseItems
+      //       },
+      //   ],
+      //   userId: userId
+      // };
+
+      // personalizeEvents.putEvents(params, function (err, data) {
+      //   if (err) console.log(err, err.stack); // an error occurred
+      //   else     console.log(data);           // successful response
+      // });
 
       return res.status(200).json(newExpense);
     } catch (error: any) {
