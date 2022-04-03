@@ -8,12 +8,13 @@ datasource db {
 }
 
 model accounts {
-  id       Int        @id @unique(map: "id_UNIQUE") @default(autoincrement())
-  balance  Float?     @db.Float
-  user_id  Int
-  name     String?    @db.VarChar(255)
-  users    users      @relation(fields: [user_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "uac")
-  expenses expenses[]
+  id                               Int        @id @unique(map: "id_UNIQUE") @default(autoincrement())
+  balance                          Float?     @db.Float
+  user_id                          Int
+  name                             String?    @db.VarChar(255)
+  users                            users      @relation(fields: [user_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "uac")
+  expenses                         expenses[]
+  users_accountsTousers_account_id users[]    @relation("accountsTousers_account_id")
 
   @@index([user_id], map: "uac_idx")
 }
@@ -42,6 +43,7 @@ model expenses {
   created_at                  DateTime?      @default(now()) @db.DateTime(0)
   account_id                  Int
   category                    String?        @db.VarChar(255)
+  isShoppingList              Int            @default(0) @db.TinyInt
   accounts                    accounts       @relation(fields: [account_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "accid")
   category_categoryToexpenses category?      @relation(fields: [category], references: [category], onDelete: NoAction, onUpdate: NoAction, map: "catid")
   expense_item                expense_item[]
@@ -52,11 +54,15 @@ model expenses {
 }
 
 model users {
-  id            Int        @id @unique(map: "id_UNIQUE") @default(autoincrement())
-  username      String?    @unique(map: "username_UNIQUE") @db.VarChar(255)
-  email         String?    @unique(map: "email_UNIQUE") @db.VarChar(255)
-  password      String?    @db.VarChar(255)
-  account_state Float?     @db.Float
-  cognito_id    String     @unique(map: "cognito_id_UNIQUE") @db.VarChar(255)
-  accounts      accounts[]
+  id                                  Int        @id @unique(map: "id_UNIQUE") @default(autoincrement())
+  username                            String?    @unique(map: "username_UNIQUE") @db.VarChar(255)
+  email                               String?    @unique(map: "email_UNIQUE") @db.VarChar(255)
+  password                            String?    @db.VarChar(255)
+  account_state                       Float?     @db.Float
+  cognito_id                          String     @unique(map: "cognito_id_UNIQUE") @db.VarChar(255)
+  account_id                          Int?
+  accounts_accountsTousers_account_id accounts?  @relation("accountsTousers_account_id", fields: [account_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "users_accounts")
+  accounts                            accounts[]
+
+  @@index([account_id], map: "users_accounts_idx")
 }

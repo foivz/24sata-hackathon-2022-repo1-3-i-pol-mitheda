@@ -96,11 +96,17 @@ export class ExpenseController {
         },
       });
 
+      if (!userAcc) {
+        return res.status(400).json({
+          message: "No account found",
+        });
+      }
+
       const newExpense = await prismaClient.expenses.create({
         data: {
           merchant: merchant ?? "",
           date: date ?? new Date(),
-          account_id: userAcc?.account_id!,
+          account_id: userAcc?.id!,
           user_id: userId,
         },
       });

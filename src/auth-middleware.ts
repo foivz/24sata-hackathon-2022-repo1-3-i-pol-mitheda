@@ -14,7 +14,7 @@ export default async function authMiddleware(req: any, res: any, next: any) {
 
         const getUser: { id: Number } | null = await prismaClient.users.findUnique({
             where: {
-                cognito_id: decoded?.sub,
+                cognito_id: decoded?.username,
             },
             select: {
                 id: true,
