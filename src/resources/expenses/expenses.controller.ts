@@ -40,6 +40,7 @@ export class ExpenseController {
       const expenses = await prismaClient.expenses.findMany({
         where: {
           account_id: userAcc?.account_id!,
+          isShoppingList: 0,
         },
         include: {
           expense_item: includeItems,
@@ -125,7 +126,7 @@ export class ExpenseController {
 
   public createExpense = async (req: any, res: any) => {
     try {
-      const { merchant, date, category } = req.body;
+      const { merchant, date, category, isShoppingList } = req.body;
 
 
       const userId = res.locals.userId as number 
@@ -144,6 +145,7 @@ export class ExpenseController {
           account_id: userAcc?.account_id!,
           user_id: userId,
           category: category,
+          isShoppingList: isShoppingList,
         },
       });
 

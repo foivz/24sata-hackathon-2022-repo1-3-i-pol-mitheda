@@ -6,6 +6,7 @@ export const createExpenseSchema = (req: any, res: any, next: any) => {
     date: Joi.date(),
     token: Joi.string().required(),
     userId: Joi.number(),
+    isShoppingList: Joi.number(),
     category: Joi.string(),
     items: Joi.array().items(
       Joi.object({
