@@ -90,4 +90,29 @@ export class AccountsController {
       return res.status(500).json({ error });
     }
   };
+
+  setUserAccount = async(req: any, res: any) => {
+    const { username } = req.body
+
+    const userIdUpdate = await prismaClient.users.findUnique({
+      where: {
+        id: res.locals.userId
+      }
+    })
+
+    await prismaClient.users.update({
+      where: {
+        username
+      }, 
+      data: {
+        account_id: userIdUpdate?.account_id
+      }
+    })
+
+    res.status(200).send("Success")
+
+
+
+
+  }
 }

@@ -1,7 +1,7 @@
 import { Router } from "express";
 import { AccountsController } from "./accounts.controller";
 import { createAccountValidation } from "./accounts.validation";
-
+import authMiddleware from "../../auth-middleware";
 export class AccountRoutes {
   private router = Router();
   private path = "/accounts";
@@ -19,7 +19,10 @@ export class AccountRoutes {
      * Get account by id
      * /accounts/:id
      */
-    this.router.get(`${this.path}/:id`, this.controller.getAccountById);
+    this.router.get(`${this.path}/get/:id`, this.controller.getAccountById);
+
+
+    this.router.post(`${this.path}/set-account`, authMiddleware, this.controller.setUserAccount);
 
     /**
      * Create account
